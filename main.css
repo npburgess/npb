@@ -1,0 +1,51 @@
+/*main.css for npb.me*/
+
+#center {
+	left: 50%;
+	max-width: 400px;
+	position: absolute;
+	padding: 15px;
+	top: 50%;
+	text-align: center;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+}
+
+img {
+	border: 0 #eee solid;
+	border-radius: 128px;
+	box-shadow: 0 0 8px rgba(0, 0, 0, .5);
+	max-width: 200px;
+	-webkit-border-radius: 128px;
+	-moz-border-radius: 128px;
+	-webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .5);
+	-moz-box-shadow: 0 0 8px rgba(0, 0, 0, .5);
+}
+
+@media (max-width: 767px) {
+	img { width: 200px; }
+}
+
+h1, p {
+	margin: 10px 0;
+}
+
+ul {
+	display: inline-flex;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+li {
+	padding-right: 10px;
+}
+
+a {
+	display: block;
+	width: 25px;
+}
+
+svg:hover {
+    fill: #74477b38;
+}
