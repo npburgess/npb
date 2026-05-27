@@ -30,9 +30,9 @@ function App() {
 					className="w-50 rounded-full mx-auto"
 				/>
 				<h1 className="text-xl font-bold my-2.5">Nathaniel Burgess</h1>
-				<p className="text-slate-500 my-2.5">
+				<h2 className="text-slate-500 my-2.5">
 					Software Engineer living in <span className="line-through">Los Angeles</span> Launceston, Tasmania.
-				</p>
+				</h2>
 				<p className="text-slate-500 my-2.5">I love tech, a local brew, and travelling with my family.</p>
 				<ul role="navigation" className="inline-flex">
 					<ListItem
