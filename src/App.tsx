@@ -3,7 +3,7 @@ import Modal from './components/Modal.tsx';
 import ListItem from './components/ListItem.tsx';
 import { LINKEDIN_PATH_D, EMAIL_PATH_D, FACEBOOK_PATH_D } from './constants';
 
-import profileImg from '/profile_lg.jpg';
+import profileImg from '/profile_sm.jpg';
 import './App.css';
 
 function App() {
