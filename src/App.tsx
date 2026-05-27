@@ -20,7 +20,7 @@ function App() {
 	return (
 		<>
 			<Modal isOpen={modalIsOpen} onClose={handleClose} />
-			<section className="bg-white border-1 border-gray-200 max-w-100 min-w-60 absolute text-center p-3.75 rounded-[5px] -translate-x-2/4 -translate-y-2/4 left-2/4 top-2/4">
+			<section className="bg-white border border-gray-200 max-w-100 min-w-60 absolute text-center p-3.75 rounded-[5px] -translate-x-2/4 -translate-y-2/4 left-2/4 top-2/4">
 				<img
 					src={profileImg}
 					alt="The profile picture of Nathaniel Burgess."
