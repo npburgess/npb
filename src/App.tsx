@@ -24,7 +24,7 @@ function App() {
 				<img
 					src={profileImg}
 					alt="The profile picture of Nathaniel Burgess."
-					className="shadow-[0_0_8px_rgba(0,0,0,0.5)] w-50 rounded-full mx-auto"
+					className="w-50 rounded-full mx-auto"
 				/>
 				<h1 className="text-xl font-bold my-2.5">Nathaniel Burgess</h1>
 				<p className="text-slate-500 my-2.5">
