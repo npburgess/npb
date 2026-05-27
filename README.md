@@ -1,12 +1,3 @@
-# npb
+# npb.me
 
-The personal site of Nathaniel Burgess
-
-## Build Tech
-
-- React
-- Vite
-- TypeScript
-- Tailwind CSS
-- EmailJS
-- GitHub Pages
+The public deployment of my React app, see [main](https://github.com/npburgess/npb/tree/main).
