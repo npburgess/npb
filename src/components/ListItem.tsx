@@ -11,7 +11,8 @@ export default function ListItem({ linkText, linkHref, onClick, svgClassName, pa
 		<li className="pr-2.5">
 			<a
 				aria-label={linkText}
-				className="block w-7 h-7"
+				title={linkText}
+				className="block w-7 h-7 cursor-pointer"
 				target={linkHref ? '_blank' : undefined}
 				href={linkHref ? linkHref : undefined}
 				onClick={onClick ? onClick : undefined}

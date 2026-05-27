@@ -1,7 +1,15 @@
 import { useState } from 'react';
 import Modal from './components/Modal.tsx';
 import ListItem from './components/ListItem.tsx';
-import { LINKEDIN_PATH_D, EMAIL_PATH_D, FACEBOOK_PATH_D } from './constants';
+import {
+	EMAIL_PATH_D,
+	GITHUB_PATH_D,
+	LINKEDIN_PATH_D,
+	FACEBOOK_PATH_D,
+	GITHUB_URL,
+	LINKEDIN_URL,
+	FACEBOOK_URL
+} from './constants';
 
 import profileImg from '/profile_sm.jpg';
 import './App.css';
@@ -27,7 +35,7 @@ function App() {
 				<img
 					src={profileImg}
 					alt="The profile picture of Nathaniel Burgess."
-					className="w-50 rounded-full mx-auto"
+					className="border border-gray-200 w-50 rounded-full mx-auto"
 				/>
 				<h1 className="text-xl font-bold my-2.5">Nathaniel Burgess</h1>
 				<h2 className="text-slate-500 my-2.5">
@@ -36,22 +44,28 @@ function App() {
 				<p className="text-slate-500 my-2.5">I love tech, a local brew, and travelling with my family.</p>
 				<ul role="navigation" className="inline-flex">
 					<ListItem
-						linkText="LinkedIn profile of Nathaniel Burgess"
-						linkHref="https://www.linkedin.com/pub/nathaniel-burgess/30/942/b69"
-						svgClassName="fill-blue-700"
-						pathD={LINKEDIN_PATH_D}
-					/>
-					<ListItem
 						linkText="Contact form modal trigger"
 						onClick={handleClick}
-						svgClassName="fill-blue-600"
+						svgClassName="fill-blue-400"
 						pathD={EMAIL_PATH_D}
 					/>
 					<ListItem
-						linkText="Facebook profile of Nathaniel Burgess"
-						linkHref="https://www.facebook.com/p/Nathaniel-Burgess-100089553147382/"
+						linkText="GitHub profile of Nathaniel Burgess"
+						linkHref={GITHUB_URL}
 						svgClassName="fill-blue-500"
+						pathD={GITHUB_PATH_D}
+					/>
+					<ListItem
+						linkText="Facebook profile of Nathaniel Burgess"
+						linkHref={FACEBOOK_URL}
+						svgClassName="fill-blue-600"
 						pathD={FACEBOOK_PATH_D}
+					/>
+					<ListItem
+						linkText="LinkedIn profile of Nathaniel Burgess"
+						linkHref={LINKEDIN_URL}
+						svgClassName="fill-blue-700"
+						pathD={LINKEDIN_PATH_D}
 					/>
 				</ul>
 			</section>
