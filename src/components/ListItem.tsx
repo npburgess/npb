@@ -1,14 +1,16 @@
 export interface ListItemProps {
+	linkText: string;
 	linkHref?: string;
 	onClick?: React.MouseEventHandler;
 	svgClassName: string;
 	pathD: string;
 }
 
-export default function ListItem({ linkHref, onClick, svgClassName, pathD }: ListItemProps) {
+export default function ListItem({ linkText, linkHref, onClick, svgClassName, pathD }: ListItemProps) {
 	return (
 		<li className="pr-2.5">
 			<a
+				aria-label={linkText}
 				className="block w-7 h-7"
 				target={linkHref ? '_blank' : undefined}
 				href={linkHref ? linkHref : undefined}

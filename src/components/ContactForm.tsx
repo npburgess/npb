@@ -50,7 +50,7 @@ export default function ContactForm({ status, setStatus, onClose }: ContactFormP
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form role="form" onSubmit={handleSubmit}>
 			<div className="sm:flex sm:items-start px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
 				<div className="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-blue-100 sm:mx-0 sm:size-10">
 					<svg
