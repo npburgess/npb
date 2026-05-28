@@ -11,10 +11,12 @@ export default function ListItem({ linkText, linkHref, onClick, svgClassName, pa
 		<li className="pr-2.5">
 			<a
 				aria-label={linkText}
+				role={linkHref ? 'link' : 'button'}
+				aria-haspopup={onClick ? 'dialog' : undefined}
 				title={linkText}
 				className="block w-7 h-7 cursor-pointer"
 				target={linkHref ? '_blank' : undefined}
-				href={linkHref ? linkHref : undefined}
+				href={linkHref ? linkHref : '#'}
 				onClick={onClick ? onClick : undefined}
 			>
 				<svg

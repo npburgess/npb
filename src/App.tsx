@@ -17,7 +17,8 @@ import './App.css';
 function App() {
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 
-	function handleClick() {
+	function handleClick(event: React.MouseEvent<HTMLAnchorElement>) {
+		event.preventDefault();
 		setModalIsOpen(true);
 	}
 
@@ -42,9 +43,9 @@ function App() {
 					Software Engineer living in <span className="line-through">Los Angeles</span> Launceston, Tasmania.
 				</h2>
 				<p className="text-slate-500 my-2.5">I love tech, a local brew, and travelling with my family.</p>
-				<ul role="navigation" className="inline-flex">
+				<ul role="list" className="inline-flex">
 					<ListItem
-						linkText="Contact form modal trigger"
+						linkText="Contact form dialog trigger"
 						onClick={handleClick}
 						svgClassName="fill-blue-400"
 						pathD={EMAIL_PATH_D}
