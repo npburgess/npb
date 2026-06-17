@@ -1,18 +1,20 @@
-import { useState } from 'react';
-import Modal from './components/Modal.tsx';
-import ListItem from './components/ListItem.tsx';
+import { useState } from "react";
+import Modal from "./components/Modal.tsx";
+import ListItem from "./components/ListItem.tsx";
 import {
 	EMAIL_PATH_D,
 	GITHUB_PATH_D,
 	LINKEDIN_PATH_D,
 	FACEBOOK_PATH_D,
+	THUSWORD_PATH_D,
 	GITHUB_URL,
 	LINKEDIN_URL,
-	FACEBOOK_URL
-} from './constants';
+	FACEBOOK_URL,
+	THUSWORD_URL
+} from "./constants";
 
-import profileImg from '/profile_sm.jpg';
-import './App.css';
+import profileImg from "/profile_sm.jpg";
+import "./App.css";
 
 function App() {
 	const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -43,7 +45,7 @@ function App() {
 					Software Engineer living in <span className="line-through">Los Angeles</span> Launceston, Tasmania.
 				</h2>
 				<p className="text-slate-500 my-2.5">I love tech, a local brew, and travelling with my family.</p>
-				<ul role="list" className="inline-flex">
+				<ul role="list" className="inline-flex [&>*:not(:last-child)]:pr-2.5">
 					<ListItem
 						linkText="Contact form dialog trigger"
 						onClick={handleClick}
@@ -67,6 +69,13 @@ function App() {
 						linkHref={LINKEDIN_URL}
 						svgClassName="fill-blue-700"
 						pathD={LINKEDIN_PATH_D}
+					/>
+					<ListItem
+						linkText="Thusword puzzle created by me"
+						linkHref={THUSWORD_URL}
+						svgClassName="fill-black mt-[2px]"
+						pathD={THUSWORD_PATH_D}
+						viewBox="0 0 1732 1732"
 					/>
 				</ul>
 			</section>
