@@ -50,6 +50,12 @@
 	.toTop.zip {
 		animation: zipDown 0.6s cubic-bezier(0.34, 0.02, 0.2, 1) both;
 	}
+	/* pages without a hero compass: pure fade, no slide/shrink */
+	.toTop.simple,
+	.toTop.simple.show,
+	.toTop.simple.show:hover {
+		transform: none;
+	}
 	@keyframes zipDown {
 		from {
 			transform: translate(-7vw, -54vh) scale(3.1);
@@ -79,6 +85,9 @@
 	if (toTop) {
 		const heroRose = document.querySelector(".rose");
 		const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		// The zip/tuck only applies where a hero compass exists (the homepage);
+		// elsewhere the button is a plain fade in/out.
+		if (!heroRose) toTop.classList.add("simple");
 		let revealed = false;
 		const onScroll = () => {
 			const past = window.scrollY > 320;
@@ -86,7 +95,7 @@
 				revealed = true;
 				heroRose?.classList.add("tucked");
 				toTop.classList.add("show");
-				if (!reduceMotion) {
+				if (!reduceMotion && heroRose) {
 					toTop.classList.add("zip");
 					toTop.addEventListener("animationend", () => toTop.classList.remove("zip"), { once: true });
 				}
