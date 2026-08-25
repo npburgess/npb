@@ -171,6 +171,18 @@ body {
 	font-weight: 500;
 	margin: 3px 0 6px;
 }
+.stop h3 a {
+	color: inherit;
+	text-decoration: underline;
+	text-decoration-color: var(--contour);
+	text-decoration-thickness: 2px;
+	text-underline-offset: 5px;
+	transition: color 0.15s, text-decoration-color 0.15s;
+}
+.stop h3 a:hover {
+	color: var(--teal);
+	text-decoration-color: var(--teal);
+}
 .stop .d {
 	color: var(--sub);
 	font-size: 15px;
