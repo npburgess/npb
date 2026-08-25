@@ -1,5 +1,7 @@
 ---
 import "../styles/global.css";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
 
 interface Props {
 	title?: string;
@@ -34,7 +36,11 @@ const ogImage = new URL(image, Astro.site).href;
 		<meta property="og:image:alt" content="The profile picture of Nathaniel Burgess." />
 		<title>{title}</title>
 	</head>
-	<body class="bg-gray-100 text-gray-900 antialiased">
-		<slot />
+	<body class="flex min-h-screen flex-col bg-gray-100 text-gray-900 antialiased">
+		<Nav />
+		<div class="flex-1">
+			<slot />
+		</div>
+		<Footer />
 	</body>
 </html>

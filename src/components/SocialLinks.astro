@@ -1,0 +1,33 @@
+---
+import { SOCIAL_LINKS } from "../lib/icons";
+
+interface Props {
+	class?: string;
+}
+const { class: className = "" } = Astro.props;
+---
+
+<ul class={`inline-flex items-center gap-2.5 ${className}`} role="list">
+	{
+		SOCIAL_LINKS.map((icon) => (
+			<li>
+				<a
+					href={icon.href}
+					target="_blank"
+					rel="noopener noreferrer"
+					aria-label={icon.label}
+					title={icon.label}
+					class="block h-6 w-6 text-slate-400 transition-colors hover:text-blue-500"
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox={icon.viewBox ?? "0 0 448 512"}
+						class="h-full w-full fill-current"
+					>
+						<path d={icon.pathD} />
+					</svg>
+				</a>
+			</li>
+		))
+	}
+</ul>

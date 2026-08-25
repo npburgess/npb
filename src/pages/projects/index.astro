@@ -1,0 +1,19 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+
+const projects = (await getCollection("projects", ({ data }) => !data.draft)).sort(
+	(a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<Base title="Projects | npb.me" description="Projects built by Nathaniel Burgess.">
+	<main class="mx-auto max-w-4xl px-6 py-12">
+		<h1 class="text-3xl font-bold">Projects</h1>
+		<p class="mt-2 text-slate-500">Things I've built — for work and for fun.</p>
+		<div class="mt-8 grid gap-5 sm:grid-cols-2">
+			{projects.map((project) => <ProjectCard project={project} />)}
+		</div>
+	</main>
+</Base>
