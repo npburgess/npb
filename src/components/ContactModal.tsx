@@ -30,6 +30,11 @@ export default function ContactModal() {
 		setStatus("");
 	};
 
+	// Click on the backdrop (the dialog element itself, outside the form) closes it.
+	const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
+		if (e.target === dialogRef.current) close();
+	};
+
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const { name, value } = e.target;
 		setForm((prev) => ({ ...prev, [name]: value }));
@@ -53,7 +58,7 @@ export default function ContactModal() {
 	const failed = status.startsWith("Something");
 
 	return (
-		<dialog ref={dialogRef} className="contact-dialog" onClose={close}>
+		<dialog ref={dialogRef} className="contact-dialog" onClose={close} onClick={handleBackdropClick}>
 			<form onSubmit={handleSubmit}>
 				<div className="cd-head">
 					<h3 className="disp">Say g'day</h3>
@@ -74,8 +79,9 @@ export default function ContactModal() {
 
 			<style>{`
 				.contact-dialog {
-					width: 100%;
+					width: calc(100% - 32px);
 					max-width: 460px;
+					margin: auto;
 					border: 1px solid var(--ink);
 					border-radius: 10px;
 					padding: 0;
