@@ -82,7 +82,7 @@ export default function ContactModal() {
 					width: calc(100% - 32px);
 					max-width: 460px;
 					margin: auto;
-					border: 1px solid var(--ink);
+					border: 1px solid #cdd5cf;
 					border-radius: 10px;
 					padding: 0;
 					background: var(--paper);
