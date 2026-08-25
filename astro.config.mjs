@@ -10,6 +10,11 @@ export default defineConfig({
 	site: "https://npb.me",
 	integrations: [react(), mdx(), sitemap()],
 	vite: {
-		plugins: [tailwindcss()]
+		plugins: [tailwindcss()],
+		// Pre-bundle so the dev server doesn't re-optimize mid-session (avoids the
+		// "Outdated Optimize Dep" 504 when the contact-form island first loads).
+		optimizeDeps: {
+			include: ["@emailjs/browser"]
+		}
 	}
 });
