@@ -1,2 +1,241 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+
+/* ---- Waypoint design tokens ---- */
+:root {
+	--ink: #1b2a27;
+	--paper: #eaece9;
+	--contour: #c7d0ca;
+	--survey: #e2622f;
+	--teal: #0f3d3e;
+	--sub: #55645d;
+}
+
+* {
+	box-sizing: border-box;
+}
+html {
+	scroll-behavior: smooth;
+}
+body {
+	background: var(--paper);
+	color: var(--ink);
+	font-family: "Inter", sans-serif;
+	-webkit-font-smoothing: antialiased;
+	margin: 0;
+}
+:focus-visible {
+	outline: 2px solid var(--survey);
+	outline-offset: 3px;
+}
+.mono {
+	font-family: "IBM Plex Mono", monospace;
+}
+.disp {
+	font-family: "Space Grotesk", sans-serif;
+}
+
+/* ---- layout frame ---- */
+.frame {
+	max-width: 980px;
+	margin: 0 auto;
+}
+.wrap {
+	position: relative;
+	z-index: 1;
+	padding: 0 30px;
+}
+
+/* ---- contour backdrop ---- */
+.contours {
+	position: fixed;
+	inset: 0;
+	z-index: 0;
+	pointer-events: none;
+	opacity: 0.42;
+}
+.contours svg {
+	width: 100%;
+	height: 100%;
+}
+.contours path {
+	fill: none;
+	stroke: #b9c3bb;
+	stroke-width: 1;
+	vector-effect: non-scaling-stroke;
+}
+
+/* ---- nav ---- */
+.bar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 24px 0;
+	font-size: 13px;
+	letter-spacing: 0.06em;
+	background: transparent;
+}
+.bar .brand {
+	font-weight: 700;
+	letter-spacing: 0.16em;
+	text-decoration: none;
+	color: var(--ink);
+}
+.bar nav a {
+	text-decoration: none;
+	color: var(--ink);
+	margin-left: 20px;
+	opacity: 0.6;
+}
+.bar nav a:hover {
+	opacity: 1;
+	color: var(--teal);
+}
+
+/* ---- section heading ---- */
+.shead {
+	display: flex;
+	align-items: baseline;
+	gap: 14px;
+	padding: 44px 0 4px;
+}
+.shead h2 {
+	font-size: 13px;
+	letter-spacing: 0.2em;
+	color: #6a7a72;
+	font-weight: 500;
+	margin: 0;
+}
+.shead .rule {
+	flex: 1;
+	height: 1px;
+	background: var(--contour);
+}
+.shead .idx {
+	font-family: "IBM Plex Mono", monospace;
+	font-size: 12px;
+	color: var(--survey);
+}
+
+/* ---- waypoint list (shared by journey + work) ---- */
+.stops {
+	position: relative;
+	margin-top: 20px;
+}
+.stops::before {
+	content: "";
+	position: absolute;
+	left: 7px;
+	top: 10px;
+	bottom: 10px;
+	width: 2px;
+	background: repeating-linear-gradient(var(--contour) 0 6px, transparent 6px 12px);
+}
+.stop {
+	position: relative;
+	padding: 20px 0 20px 44px;
+	border-bottom: 1px solid #d6ddd7;
+	display: grid;
+	grid-template-columns: 1fr auto;
+	gap: 14px;
+	align-items: baseline;
+}
+.stop::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 26px;
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	background: var(--paper);
+	border: 2px solid var(--teal);
+}
+.stop.here::before {
+	background: var(--survey);
+	border-color: var(--survey);
+	box-shadow: 0 0 0 4px rgba(226, 98, 43, 0.18);
+}
+.stop.feat::before {
+	background: var(--survey);
+	border-color: var(--survey);
+}
+.stop .n {
+	font-size: 11px;
+	letter-spacing: 0.14em;
+	color: #8b978f;
+}
+.stop h3 {
+	font-family: "Space Grotesk", sans-serif;
+	font-size: 25px;
+	font-weight: 500;
+	margin: 3px 0 6px;
+}
+.stop .d {
+	color: var(--sub);
+	font-size: 15px;
+	max-width: 52ch;
+	line-height: 1.5;
+}
+.stop .meta {
+	text-align: right;
+	font-size: 12px;
+}
+.stop .tag {
+	display: inline-block;
+	padding: 2px 8px;
+	border: 1px solid var(--ink);
+	border-radius: 20px;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	font-size: 10px;
+}
+.stop .tag.work {
+	background: var(--ink);
+	color: var(--paper);
+}
+.stop .tag.now {
+	background: var(--survey);
+	color: #fff;
+	border-color: var(--survey);
+}
+.stop .coord {
+	color: var(--survey);
+	margin-top: 6px;
+}
+.stop .go {
+	display: inline-block;
+	margin-top: 8px;
+	color: var(--teal);
+	text-decoration: none;
+	font-weight: 500;
+}
+.stop .go:hover {
+	color: var(--survey);
+}
+.stop .yr {
+	font-family: "Space Grotesk", sans-serif;
+	font-size: 18px;
+	color: var(--ink);
+}
+
+/* ---- footer ---- */
+.site-footer {
+	padding: 46px 0 40px;
+	font-size: 12px;
+	color: #6a7a72;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 10px;
+	font-family: "IBM Plex Mono", monospace;
+}
+
+@media (max-width: 680px) {
+	.stop {
+		grid-template-columns: 1fr;
+	}
+	.stop .meta {
+		text-align: left;
+	}
+}

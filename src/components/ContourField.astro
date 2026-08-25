@@ -1,0 +1,77 @@
+---
+// Topographic contour backdrop — iso-lines of one smooth height field (marching
+// squares), so lines never cross and cover the whole plane. Two placed summits.
+---
+
+<div class="contours" aria-hidden="true">
+	<svg id="topo" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice"></svg>
+</div>
+
+<script>
+	(function contourField() {
+		const svg = document.getElementById("topo");
+		if (!svg) return;
+		const NS = "http://www.w3.org/2000/svg";
+		const W = 1440, H = 900, nx = 100, ny = 64;
+		const gx = W / nx, gy = H / ny;
+		const peak = (u: number, v: number, cx: number, cy: number, amp: number, sig: number) =>
+			amp * Math.exp(-(((u - cx) ** 2 + (v - cy) ** 2)) / (2 * sig * sig));
+		const field = (u: number, v: number) =>
+			1.5 * u + 1.0 * v +
+			0.45 * Math.sin(2.6 * u - 1.3 * v + 0.7) +
+			peak(u, v, 0.18, 0.20, 4.2, 0.10) + // top-left summit (tall + tight)
+			peak(u, v, 0.80, 0.80, 2.4, 0.17);  // bottom-right summit (moderate)
+		const val: number[][] = [];
+		let mn = Infinity, mx = -Infinity;
+		for (let j = 0; j <= ny; j++) {
+			val[j] = [];
+			for (let i = 0; i <= nx; i++) {
+				const f = field(i / nx, j / ny);
+				val[j][i] = f;
+				if (f < mn) mn = f;
+				if (f > mx) mx = f;
+			}
+		}
+		const levels = 26;
+		const interp = (p1: number[], p2: number[], va: number, vb: number, L: number) => {
+			const t = (L - va) / (vb - va);
+			return [p1[0] + t * (p2[0] - p1[0]), p1[1] + t * (p2[1] - p1[1])];
+		};
+		for (let l = 1; l < levels; l++) {
+			const L = mn + (mx - mn) * (l / levels);
+			let d = "";
+			for (let j = 0; j < ny; j++) {
+				for (let i = 0; i < nx; i++) {
+					const x0 = i * gx, x1 = (i + 1) * gx, y0 = j * gy, y1 = (j + 1) * gy;
+					const tl = val[j][i], tr = val[j][i + 1], br = val[j + 1][i + 1], bl = val[j + 1][i];
+					let idx = 0;
+					if (tl > L) idx |= 8;
+					if (tr > L) idx |= 4;
+					if (br > L) idx |= 2;
+					if (bl > L) idx |= 1;
+					if (idx === 0 || idx === 15) continue;
+					const T = () => interp([x0, y0], [x1, y0], tl, tr, L);
+					const R = () => interp([x1, y0], [x1, y1], tr, br, L);
+					const B = () => interp([x0, y1], [x1, y1], bl, br, L);
+					const Lf = () => interp([x0, y0], [x0, y1], tl, bl, L);
+					const seg = (a: number[], b: number[]) => {
+						d += "M" + a[0].toFixed(1) + " " + a[1].toFixed(1) + "L" + b[0].toFixed(1) + " " + b[1].toFixed(1);
+					};
+					switch (idx) {
+						case 1: case 14: seg(Lf(), B()); break;
+						case 2: case 13: seg(B(), R()); break;
+						case 3: case 12: seg(Lf(), R()); break;
+						case 4: case 11: seg(T(), R()); break;
+						case 6: case 9: seg(T(), B()); break;
+						case 7: case 8: seg(Lf(), T()); break;
+						case 5: seg(Lf(), B()); seg(T(), R()); break;
+						case 10: seg(Lf(), T()); seg(B(), R()); break;
+					}
+				}
+			}
+			const p = document.createElementNS(NS, "path");
+			p.setAttribute("d", d);
+			svg.appendChild(p);
+		}
+	})();
+</script>

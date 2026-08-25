@@ -1,13 +1,8 @@
 ---
-import SocialLinks from "./SocialLinks.astro";
 const year = new Date().getFullYear();
 ---
 
-<footer class="border-t border-gray-200 bg-gray-100">
-	<div class="mx-auto flex max-w-4xl flex-col items-center gap-4 px-6 py-10 text-center">
-		<SocialLinks />
-		<p class="text-sm text-slate-400">
-			&copy; {year} Nathaniel Burgess &middot; Launceston, Tasmania
-		</p>
-	</div>
+<footer class="site-footer">
+	<span>© {year} NATHANIEL BURGESS · LAUNCESTON, TAS</span>
+	<span>41.4° S · 147.1° E</span>
 </footer>

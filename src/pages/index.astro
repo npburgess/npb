@@ -1,34 +1,209 @@
 ---
+import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
-import profileImg from "../../public/profile_sm.jpg";
+import CompassRose from "../components/CompassRose.astro";
+import JourneyMap from "../components/JourneyMap.astro";
+import ContactModal from "../components/ContactModal.tsx";
+
+// Biographical journey (one-off, inline)
+const journey = [
+	{ n: "WAYPOINT 01 · ORIGIN", title: "North-West Coast", desc: "Where it started. Grew up on Tasmania's NW coast — the long, quiet edge of the island.", right: { yr: "EST 1985", coord: "41.05° S · 145.90° E" } },
+	{ n: "WAYPOINT 02", title: "Hobart, Tasmania", desc: "Moved south to study computer science. Learned to build things that run.", right: { yr: "UTAS", coord: "42.88° S · 147.33° E" } },
+	{ n: "WAYPOINT 03", title: "Los Angeles, California", desc: "Twelve years building software a hemisphere from home. Got married and had three kids and a dog along the way.", right: { yr: "~12 yrs", coord: "34.05° N · 118.24° W" } },
+	{ n: "WAYPOINT 04 · YOU ARE HERE", title: "Launceston, Tasmania", desc: "Brought everyone home three years ago. Same island I started on, wiser and outnumbered.", here: true, right: { tag: "now", coord: "41.44° S · 147.14° E" } }
+];
+
+// Projects in the intended display order
+const order = ["thusword", "keirons-krafts", "compass", "boozers"];
+const projects = (await getCollection("projects", ({ data }) => !data.draft)).sort(
+	(a, b) => order.indexOf(a.id) - order.indexOf(b.id)
+);
+const displayUrl = (u?: string) => (u ? u.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "") : "");
 ---
 
 <Base>
-	<main class="mx-auto max-w-2xl px-6 py-16">
-		<section class="flex flex-col items-center text-center">
-			<img
-				src={profileImg.src}
-				alt="Nathaniel Burgess"
-				width="160"
-				height="160"
-				class="h-40 w-40 rounded-full border border-gray-200"
-			/>
-			<h1 class="mt-6 text-3xl font-bold">Nathaniel Burgess</h1>
-			<p class="mt-2 text-slate-500">Software Engineer living in Launceston, Tasmania.</p>
-			<p class="mt-1 text-slate-500">I love tech, a local brew, and travelling with my family.</p>
-			<a
-				href="/projects"
-				class="mt-6 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-500"
-			>
-				See my projects
-			</a>
-		</section>
-
-		<section id="about" class="mt-16 scroll-mt-20">
-			<h2 class="text-xl font-bold">About</h2>
-			<p class="mt-3 text-slate-600">
-				Placeholder about section — real copy and layout come after the mockup stage.
+	<!-- HERO -->
+	<section class="hero">
+		<div>
+			<div class="coord mono">CURRENT POSITION · 41.4358° S &nbsp; 147.1441° E · LAUNCESTON</div>
+			<h1 class="disp">Software engineer,<br />by way of everywhere.</h1>
+			<p>
+				I grew up on Tasmania's north-west coast, learned to code in Hobart, spent twelve years
+				building software in Los Angeles, then brought my family home. Tech, a local brew, and
+				travelling — now mostly with three kids and a dog.
 			</p>
-		</section>
-	</main>
+			<div class="cta">
+				<a class="solid" href="#work">View work ↓</a>
+				<a class="ghost" href="#contact" data-contact>Say g'day</a>
+			</div>
+		</div>
+		<CompassRose />
+	</section>
+
+	<!-- JOURNEY -->
+	<div id="journey" class="shead"><span class="idx mono">01</span><h2 class="mono">THE LONG WAY HOME</h2><span class="rule"></span></div>
+	<JourneyMap />
+	<div class="stops">
+		{
+			journey.map((w) => (
+				<div class={`stop${w.here ? " here" : ""}`}>
+					<div>
+						<div class="n mono">{w.n}</div>
+						<h3>{w.title}</h3>
+						<div class="d">{w.desc}</div>
+					</div>
+					<div class="meta">
+						{w.right.yr && <span class="yr mono">{w.right.yr}</span>}
+						{w.right.tag && <span class="tag now">{w.right.tag}</span>}
+						<div class="coord mono">{w.right.coord}</div>
+					</div>
+				</div>
+			))
+		}
+	</div>
+
+	<!-- WORK -->
+	<div id="work" class="shead"><span class="idx mono">02</span><h2 class="mono">SELECTED WORK</h2><span class="rule"></span></div>
+	<div class="stops">
+		{
+			projects.map((p, i) => (
+				<div class={`stop${p.data.featured ? " feat" : ""}`}>
+					<div>
+						<div class="n mono">WAYPOINT {String(i + 1).padStart(2, "0")}{p.data.featured ? " · FEATURED" : ""}</div>
+						<h3><a href={`/projects/${p.id}`}>{p.data.title}</a></h3>
+						<div class="d">{p.data.summary}</div>
+					</div>
+					<div class="meta">
+						<span class={`tag${p.data.type === "work" ? " work" : ""}`}>{p.data.type}</span>
+						<div class="coord mono">{displayUrl(p.data.liveUrl)}</div>
+						{p.data.liveUrl && (
+							<a class="go mono" href={p.data.liveUrl} target="_blank" rel="noopener noreferrer">
+								visit ↗
+							</a>
+						)}
+					</div>
+				</div>
+			))
+		}
+	</div>
+
+	<!-- CONTACT -->
+	<section id="contact" class="contact">
+		<div>
+			<h2 class="disp">Get in touch.</h2>
+			<p>Working on something, hiring, or just want to say hello? Drop me a line.</p>
+		</div>
+		<button class="contact-open mono" data-contact>Open contact form ↗</button>
+	</section>
+
+	<ContactModal client:load />
 </Base>
+
+<style>
+	.hero {
+		padding: 66px 0 54px;
+		display: grid;
+		grid-template-columns: 1fr auto;
+		gap: 30px;
+		align-items: end;
+	}
+	.hero .coord {
+		font-size: 12px;
+		letter-spacing: 0.12em;
+		color: var(--survey);
+	}
+	.hero h1 {
+		font-size: clamp(38px, 7vw, 76px);
+		line-height: 0.95;
+		font-weight: 700;
+		letter-spacing: -0.02em;
+		margin: 14px 0 20px;
+	}
+	.hero p {
+		max-width: 40ch;
+		color: var(--sub);
+		font-size: 17px;
+		line-height: 1.55;
+	}
+	.hero .cta {
+		display: inline-flex;
+		gap: 10px;
+		margin-top: 26px;
+	}
+	.hero .cta a {
+		text-decoration: none;
+		font-family: "IBM Plex Mono", monospace;
+		font-size: 13px;
+		padding: 9px 16px;
+		border-radius: 6px;
+		cursor: pointer;
+	}
+	.hero .cta .solid {
+		background: var(--ink);
+		color: var(--paper);
+	}
+	.hero .cta .solid:hover {
+		background: var(--teal);
+	}
+	.hero .cta .ghost {
+		border: 1px solid var(--ink);
+		color: var(--ink);
+	}
+	.hero .cta .ghost:hover {
+		border-color: var(--survey);
+		color: var(--survey);
+	}
+
+	.stop h3 :global(a) {
+		color: inherit;
+		text-decoration: none;
+	}
+	.stop h3 :global(a:hover) {
+		color: var(--teal);
+	}
+
+	.contact {
+		margin: 60px 0 30px;
+		background: var(--ink);
+		color: var(--paper);
+		border-radius: 14px;
+		padding: 40px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 24px;
+		flex-wrap: wrap;
+	}
+	.contact h2 {
+		font-family: "Space Grotesk", sans-serif;
+		font-size: 30px;
+		font-weight: 500;
+		margin: 0;
+	}
+	.contact p {
+		color: #b7c2bd;
+		margin: 8px 0 0;
+		max-width: 40ch;
+		font-size: 15px;
+	}
+	.contact-open {
+		border: 0;
+		background: var(--survey);
+		color: #fff;
+		padding: 12px 22px;
+		border-radius: 8px;
+		font-size: 14px;
+		white-space: nowrap;
+		cursor: pointer;
+	}
+	.contact-open:hover {
+		background: #fff;
+		color: var(--ink);
+	}
+
+	@media (max-width: 680px) {
+		.hero {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

@@ -1,0 +1,105 @@
+---
+// The hero compass "returned" as a back-to-top control: fades/zips in once the
+// hero scrolls away (also tucking the hero rose), points due north, scrolls to top.
+---
+
+<button class="toTop" id="toTop" aria-label="Back to top" title="Back to top — due north">
+	<svg viewBox="0 0 100 100" aria-hidden="true">
+		<circle cx="50" cy="50" r="45" fill="none" stroke="#1b2a27" stroke-width="3" />
+		<path class="n" d="M50 14 L58 52 L42 52 Z" />
+		<path class="s" d="M50 86 L58 48 L42 48 Z" />
+		<circle cx="50" cy="50" r="3.5" fill="#1b2a27" />
+	</svg>
+</button>
+
+<style>
+	.toTop {
+		position: fixed;
+		right: 24px;
+		bottom: 24px;
+		width: 54px;
+		height: 54px;
+		border-radius: 50%;
+		background: color-mix(in srgb, var(--paper) 88%, transparent);
+		backdrop-filter: blur(3px);
+		border: 1px solid var(--ink);
+		display: grid;
+		place-items: center;
+		cursor: pointer;
+		z-index: 40;
+		opacity: 0;
+		transform: translateY(12px) scale(0.8);
+		pointer-events: none;
+		transition: opacity 0.35s, transform 0.35s, border-color 0.2s;
+		box-shadow: 0 6px 22px rgba(0, 0, 0, 0.12);
+	}
+	.toTop.show {
+		opacity: 1;
+		transform: none;
+		pointer-events: auto;
+	}
+	.toTop svg {
+		width: 34px;
+		height: 34px;
+		display: block;
+	}
+	.toTop.show:hover {
+		border-color: var(--survey);
+		transform: scale(1.08);
+	}
+	.toTop.zip {
+		animation: zipDown 0.6s cubic-bezier(0.34, 0.02, 0.2, 1) both;
+	}
+	@keyframes zipDown {
+		from {
+			transform: translate(-7vw, -54vh) scale(3.1);
+		}
+		to {
+			transform: none;
+		}
+	}
+	.toTop .n {
+		fill: var(--survey);
+	}
+	.toTop .s {
+		fill: var(--ink);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.toTop {
+			transition: opacity 0.2s;
+		}
+		.toTop.show {
+			transform: none;
+		}
+	}
+</style>
+
+<script>
+	const toTop = document.getElementById("toTop");
+	if (toTop) {
+		const heroRose = document.querySelector(".rose");
+		const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		let revealed = false;
+		const onScroll = () => {
+			const past = window.scrollY > 320;
+			if (past && !revealed) {
+				revealed = true;
+				heroRose?.classList.add("tucked");
+				toTop.classList.add("show");
+				if (!reduceMotion) {
+					toTop.classList.add("zip");
+					toTop.addEventListener("animationend", () => toTop.classList.remove("zip"), { once: true });
+				}
+			} else if (!past && revealed) {
+				revealed = false;
+				heroRose?.classList.remove("tucked");
+				toTop.classList.remove("show", "zip");
+			}
+		};
+		window.addEventListener("scroll", onScroll, { passive: true });
+		onScroll();
+		toTop.addEventListener("click", () => {
+			window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+		});
+	}
+</script>
