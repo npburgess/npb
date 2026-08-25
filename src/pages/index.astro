@@ -7,10 +7,10 @@ import ContactModal from "../components/ContactModal.tsx";
 
 // Biographical journey (one-off, inline)
 const journey = [
-	{ n: "WAYPOINT 01 · ORIGIN", title: "North-West Coast", desc: "Where it started. Grew up on Tasmania's NW coast — the long, quiet edge of the island.", right: { yr: "EST 1985", coord: "41.05° S · 145.90° E" } },
-	{ n: "WAYPOINT 02", title: "Hobart, Tasmania", desc: "Moved south to study computer science. Learned to build things that run.", right: { yr: "UTAS", coord: "42.88° S · 147.33° E" } },
-	{ n: "WAYPOINT 03", title: "Los Angeles, California", desc: "Twelve years building software a hemisphere from home. Got married and had three kids and a dog along the way.", right: { yr: "~12 yrs", coord: "34.05° N · 118.24° W" } },
-	{ n: "WAYPOINT 04 · YOU ARE HERE", title: "Launceston, Tasmania", desc: "Brought everyone home three years ago. Same island I started on, wiser and outnumbered.", here: true, right: { tag: "now", coord: "41.44° S · 147.14° E" } }
+	{ n: "WAYPOINT 01 · ORIGIN", title: "North-West Coast", desc: "Where it started. Grew up on Tasmania's NW coast — the long, quiet edge of the island.", right: { yr: "EST 1985", coord: "41° S · 145° E" } },
+	{ n: "WAYPOINT 02", title: "Hobart, Tasmania", desc: "Moved south to study computer science. Learned to build things that run.", right: { yr: "UTAS", coord: "42° S · 147° E" } },
+	{ n: "WAYPOINT 03", title: "Los Angeles, California", desc: "Twelve years building software a hemisphere from home. Got married and had three kids and a dog along the way.", right: { yr: "~12 yrs", coord: "34° N · 118° W" } },
+	{ n: "WAYPOINT 04 · YOU ARE HERE", title: "Launceston, Tasmania", desc: "Brought everyone home three years ago. Same island I started on, wiser and outnumbered.", here: true, right: { tag: "now", coord: "41° S · 147° E" } }
 ];
 
 // Projects in the intended display order
@@ -25,7 +25,7 @@ const displayUrl = (u?: string) => (u ? u.replace(/^https?:\/\/(www\.)?/, "").re
 	<!-- HERO -->
 	<section class="hero">
 		<div>
-			<div class="coord mono">CURRENT POSITION · 41.4358° S &nbsp; 147.1441° E · LAUNCESTON</div>
+			<div class="coord mono">CURRENT POSITION · 41° S &nbsp; 147° E · LAUNCESTON</div>
 			<h1 class="disp">Software engineer,<br />by way of everywhere.</h1>
 			<p>
 				I grew up on Tasmania's north-west coast, learned to code in Hobart, spent twelve years
