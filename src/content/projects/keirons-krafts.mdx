@@ -1,15 +1,28 @@
 ---
 title: Keiron's Krafts
-summary: A clean storefront for handmade goods — easy for its owner to run.
+summary: An online storefront for handmade goods, with invoicing and image uploads.
 type: hobby
 featured: false
 liveUrl: https://keironskrafts.com
-tech: []
-date: 2024-06-01
+tech: ["Next.js", "TypeScript", "Postgres (Neon)", "Drizzle ORM", "AWS S3", "Resend"]
+date: 2025-03-01
 draft: false
 ---
 
 ## About
 
-A small storefront site for handmade goods. *(Placeholder — real details to come
-from the project repo.)*
+Keiron's Krafts is an online storefront for handmade goods — a clean shop that's
+straightforward for its owner to run day to day.
+
+## Notable
+
+- Product and order data in **Postgres (Neon)** via **Drizzle ORM**, typed end to
+  end.
+- Image uploads to **S3** with presigned URLs.
+- Generated **PDF** invoices/receipts (`react-pdf`) and transactional email
+  (Resend).
+- Cart and UI state handled with Zustand.
+
+## Stack
+
+Next.js + TypeScript, Postgres (Neon) + Drizzle ORM, AWS S3, Resend.

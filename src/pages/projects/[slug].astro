@@ -13,49 +13,170 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 const { title, summary, type, tech, liveUrl, repoUrl } = project.data;
 const { Content } = await render(project);
+const displayUrl = (u?: string) => (u ? u.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "") : "");
 ---
 
 <Base title={`${title} | npb.me`} description={summary}>
-	<main class="mx-auto max-w-2xl px-6 py-12">
-		<a href="/projects" class="text-sm text-slate-500 hover:text-blue-600">&larr; All projects</a>
-		<div class="mt-4 flex items-center gap-2">
-			<h1 class="text-3xl font-bold">{title}</h1>
-			<span
-				class={`rounded-full px-2 py-0.5 text-xs font-medium ${
-					type === "work" ? "bg-amber-100 text-amber-700" : "bg-slate-100 text-slate-600"
-				}`}
-			>
-				{type}
-			</span>
+	<article class="case">
+		<a class="back mono" href="/projects">← all projects</a>
+
+		<div class="case-head">
+			<h1 class="disp">{title}</h1>
+			<span class={`tag${type === "work" ? " work" : ""}`}>{type}</span>
 		</div>
-		<p class="mt-2 text-slate-500">{summary}</p>
+		<p class="lede">{summary}</p>
+
 		{
 			tech.length > 0 && (
-				<ul class="mt-3 flex flex-wrap gap-1.5">
+				<ul class="tech">
 					{tech.map((t) => (
-						<li class="rounded bg-gray-100 px-2 py-0.5 text-xs text-slate-500">{t}</li>
+						<li class="mono">{t}</li>
 					))}
 				</ul>
 			)
 		}
-		<div class="mt-4 flex gap-4 text-sm">
+
+		<div class="links mono">
 			{
 				liveUrl && (
-					<a href={liveUrl} target="_blank" rel="noopener noreferrer" class="font-medium text-blue-600 hover:underline">
-						Visit site ↗
+					<a href={liveUrl} target="_blank" rel="noopener noreferrer">
+						{displayUrl(liveUrl)} ↗
 					</a>
 				)
 			}
 			{
 				repoUrl && (
-					<a href={repoUrl} target="_blank" rel="noopener noreferrer" class="font-medium text-slate-500 hover:text-blue-600">
-						Source ↗
+					<a href={repoUrl} target="_blank" rel="noopener noreferrer">
+						source ↗
 					</a>
 				)
 			}
 		</div>
-		<article class="prose prose-slate mt-8 max-w-none">
+
+		<div class="body">
 			<Content />
-		</article>
-	</main>
+		</div>
+	</article>
 </Base>
+
+<style>
+	.case {
+		max-width: 44rem;
+		padding: 60px 0 40px;
+	}
+	.back {
+		font-size: 13px;
+		color: #6a7a72;
+		text-decoration: none;
+	}
+	.back:hover {
+		color: var(--survey);
+	}
+	.case-head {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		margin: 18px 0 6px;
+	}
+	.case-head h1 {
+		font-family: "Space Grotesk", sans-serif;
+		font-size: clamp(32px, 5vw, 48px);
+		font-weight: 700;
+		letter-spacing: -0.02em;
+		margin: 0;
+	}
+	.tag {
+		display: inline-block;
+		padding: 3px 9px;
+		border: 1px solid var(--ink);
+		border-radius: 20px;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		font-size: 10px;
+		font-family: "IBM Plex Mono", monospace;
+	}
+	.tag.work {
+		background: var(--ink);
+		color: var(--paper);
+	}
+	.lede {
+		color: var(--sub);
+		font-size: 18px;
+		line-height: 1.55;
+		max-width: 52ch;
+		margin: 0 0 18px;
+	}
+	.tech {
+		list-style: none;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		padding: 0;
+		margin: 0 0 18px;
+	}
+	.tech li {
+		font-size: 11px;
+		color: var(--sub);
+		background: rgba(15, 61, 62, 0.07);
+		border-radius: 4px;
+		padding: 3px 9px;
+	}
+	.links {
+		display: flex;
+		gap: 20px;
+		font-size: 14px;
+		margin-bottom: 34px;
+	}
+	.links a {
+		color: var(--teal);
+		text-decoration: none;
+	}
+	.links a:hover {
+		color: var(--survey);
+	}
+
+	/* case-study body */
+	.body {
+		border-top: 1px solid var(--contour);
+		padding-top: 28px;
+		color: #33413c;
+		line-height: 1.7;
+	}
+	.body :global(h2) {
+		font-family: "Space Grotesk", sans-serif;
+		font-size: 22px;
+		font-weight: 600;
+		color: var(--ink);
+		margin: 30px 0 10px;
+	}
+	.body :global(p) {
+		margin: 0 0 16px;
+	}
+	.body :global(ul) {
+		margin: 0 0 16px;
+		padding-left: 20px;
+	}
+	.body :global(li) {
+		margin: 4px 0;
+	}
+	.body :global(a) {
+		color: var(--teal);
+	}
+	.body :global(strong) {
+		color: var(--ink);
+	}
+	.body :global(blockquote) {
+		border-left: 3px solid var(--survey);
+		margin: 20px 0;
+		padding: 4px 0 4px 16px;
+		color: var(--sub);
+		font-style: italic;
+	}
+	.body :global(code) {
+		font-family: "IBM Plex Mono", monospace;
+		font-size: 0.9em;
+		background: rgba(15, 61, 62, 0.08);
+		padding: 1px 5px;
+		border-radius: 4px;
+	}
+</style>

@@ -1,16 +1,30 @@
 ---
-title: Compass
-summary: A platform for bike inspections — field workflows and reporting. The day job.
+title: Cycle Inspect
+summary: A bike-inspection platform — field inspections, dashboards, and PDF reports. My work project.
 type: work
 featured: false
 liveUrl: https://www.cycleinspect.com/compass/
-tech: []
-date: 2025-06-01
+tech: ["Next.js 15", "TypeScript", "Supabase", "TanStack Query", "Recharts", "react-pdf"]
+date: 2026-06-01
 draft: false
 ---
 
 ## About
 
-Compass is a platform for bike inspections — field workflows and reporting. The
-product needs a login, so the link points to the marketing site. *(Placeholder —
-real case study to come.)*
+Compass is the platform behind **Cycle Inspect** — software for booking, running,
+and reporting bicycle inspections. It's my day job, so the live product sits
+behind a login; the link goes to the marketing site.
+
+## Notable
+
+- **Role-scoped access** so inspectors, admins, and clients each see the right
+  data (Supabase auth + row-level security).
+- Data-dense **dashboards** (TanStack Table + Recharts) and generated **PDF
+  inspection reports** (`react-pdf`).
+- Forms built with react-hook-form + Zod, on Radix UI primitives.
+- Some AI-assisted workflows via OpenAI; transactional email via Resend.
+
+## Stack
+
+Next.js 15 + TypeScript, Supabase (auth / Postgres / SSR), TanStack Query &
+Table, Recharts, react-pdf.
