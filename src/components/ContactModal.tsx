@@ -50,7 +50,9 @@ export default function ContactModal() {
 			await emailjs.send(serviceID, templateID, { ...form }, publicKey);
 			setStatus("Message sent — thanks, I'll be in touch.");
 			setForm(EMPTY);
-		} catch {
+		} catch (err) {
+			const e = err as { status?: number; text?: string };
+			console.error("EmailJS send failed:", e?.status, e?.text ?? err);
 			setStatus("Something went wrong. Please try again later.");
 		}
 	};
