@@ -76,7 +76,7 @@ const displayUrl = (u?: string) => (u ? u.replace(/^https?:\/\/(www\.)?/, "").re
 						<span class={`tag${p.data.type === "work" ? " work" : ""}`}>{p.data.type}</span>
 						<div class="coord mono">{displayUrl(p.data.liveUrl)}</div>
 						{p.data.liveUrl && (
-							<a class="go mono" href={p.data.liveUrl} target="_blank" rel="noopener noreferrer">
+							<a class="go mono" href={p.data.liveUrl} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${p.data.title}`}>
 								visit ↗
 							</a>
 						)}
@@ -109,7 +109,7 @@ const displayUrl = (u?: string) => (u ? u.replace(/^https?:\/\/(www\.)?/, "").re
 	.hero .coord {
 		font-size: 12px;
 		letter-spacing: 0.12em;
-		color: var(--survey);
+		color: var(--survey-text);
 	}
 	.hero h1 {
 		font-size: clamp(38px, 7vw, 76px);
@@ -179,7 +179,7 @@ const displayUrl = (u?: string) => (u ? u.replace(/^https?:\/\/(www\.)?/, "").re
 	}
 	.contact-open {
 		border: 0;
-		background: var(--survey);
+		background: var(--survey-text);
 		color: #fff;
 		padding: 12px 22px;
 		border-radius: 8px;

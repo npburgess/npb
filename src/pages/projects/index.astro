@@ -26,7 +26,7 @@ const displayUrl = (u?: string) => (u ? u.replace(/^https?:\/\/(www\.)?/, "").re
 					<div class="meta">
 						<span class={`tag${p.data.type === "work" ? " work" : ""}`}>{p.data.type}</span>
 						<div class="coord mono">{displayUrl(p.data.liveUrl)}</div>
-						<a class="go mono" href={`/projects/${p.id}`}>read →</a>
+						<a class="go mono" href={`/projects/${p.id}`} aria-label={`Read about ${p.data.title}`}>read →</a>
 					</div>
 				</div>
 			))

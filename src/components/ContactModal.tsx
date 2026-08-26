@@ -108,7 +108,7 @@ export default function ContactModal() {
 				.cd-actions button { font-family: "IBM Plex Mono", monospace; font-size: 13px; padding: 9px 18px; border-radius: 6px; cursor: pointer; }
 				.cd-cancel { background: transparent; border: 1px solid #cdd5cf; color: var(--ink); }
 				.cd-cancel:hover { border-color: var(--ink); }
-				.cd-send { background: var(--survey); border: 0; color: #fff; }
+				.cd-send { background: var(--survey-text); border: 0; color: #fff; }
 				.cd-send:hover { background: var(--teal); }
 				.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
 			`}</style>
