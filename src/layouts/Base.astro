@@ -7,15 +7,20 @@ import BackToTop from "../components/BackToTop.astro";
 
 interface Props {
 	title?: string;
+	seoTitle?: string;
 	description?: string;
 	image?: string;
 }
 
 const {
 	title = "Nathaniel Burgess | npb.me",
+	seoTitle,
 	description = "The personal website of Nathaniel Burgess, a Software Engineer living in Launceston, Tasmania.",
 	image = "/og.png"
 } = Astro.props;
+
+// <title> can run longer for SEO/SERP; og:title stays short and clean for social cards.
+const pageTitle = seoTitle ?? title;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImage = new URL(image, Astro.site).href;
@@ -82,7 +87,7 @@ const jsonLd = {
 			href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap"
 			rel="stylesheet"
 		/>
-		<title>{title}</title>
+		<title>{pageTitle}</title>
 	</head>
 	<body>
 		<ContourField />
