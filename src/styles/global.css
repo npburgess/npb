@@ -180,8 +180,8 @@ body {
 	transition: color 0.15s, text-decoration-color 0.15s;
 }
 .stop h3 a:hover {
-	color: var(--teal);
-	text-decoration-color: var(--teal);
+	color: var(--survey);
+	text-decoration-color: var(--survey);
 }
 .stop .d {
 	color: var(--sub);
