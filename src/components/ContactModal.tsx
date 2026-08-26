@@ -43,9 +43,9 @@ export default function ContactModal() {
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setStatus("Sending…");
-		const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-		const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-		const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+		const serviceID = import.meta.env.PUBLIC_EMAILJS_SERVICE_ID;
+		const templateID = import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID;
+		const publicKey = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY;
 		try {
 			await emailjs.send(serviceID, templateID, { ...form }, publicKey);
 			setStatus("Message sent — thanks, I'll be in touch.");

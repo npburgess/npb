@@ -25,12 +25,13 @@ Projects are MDX files in `src/content/projects/` with typed frontmatter
 
 ## Environment
 
-The contact form uses EmailJS (client-side, public by design). Local dev reads
-`.env`; the deploy build reads GitHub Actions secrets:
+The contact form uses EmailJS (client-side, public by design). Astro only exposes
+`PUBLIC_`-prefixed env vars to client code. Local dev reads `.env`; the deploy
+build reads GitHub Actions secrets:
 
-- `VITE_EMAILJS_SERVICE_ID`
-- `VITE_EMAILJS_TEMPLATE_ID`
-- `VITE_EMAILJS_PUBLIC_KEY`
+- `PUBLIC_EMAILJS_SERVICE_ID`
+- `PUBLIC_EMAILJS_TEMPLATE_ID`
+- `PUBLIC_EMAILJS_PUBLIC_KEY`
 
 ## Deploy
 
