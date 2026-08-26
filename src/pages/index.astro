@@ -3,7 +3,7 @@ import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import CompassRose from "../components/CompassRose.astro";
 import JourneyMap from "../components/JourneyMap.astro";
-import ContactModal from "../components/ContactModal.tsx";
+import ContactModal from "../components/ContactModal.astro";
 
 // Biographical journey (one-off, inline)
 const journey = [
@@ -95,7 +95,7 @@ const displayUrl = (u?: string) => (u ? u.replace(/^https?:\/\/(www\.)?/, "").re
 		<button class="contact-open mono" data-contact>Open contact form ↗</button>
 	</section>
 
-	<ContactModal client:load />
+	<ContactModal />
 </Base>
 
 <style>

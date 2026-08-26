@@ -1,6 +1,5 @@
 // @ts-check
 import { defineConfig } from "astro/config";
-import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
@@ -8,7 +7,7 @@ import tailwindcss from "@tailwindcss/vite";
 // https://astro.build/config
 export default defineConfig({
 	site: "https://npb.me",
-	integrations: [react(), mdx(), sitemap()],
+	integrations: [mdx(), sitemap()],
 	vite: {
 		plugins: [tailwindcss()],
 		// Pre-bundle so the dev server doesn't re-optimize mid-session (avoids the
