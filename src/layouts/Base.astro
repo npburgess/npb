@@ -99,5 +99,16 @@ const jsonLd = {
 			</div>
 		</div>
 		<BackToTop />
+		{
+			/* Cloudflare Web Analytics (cookieless). Public beacon token; prod-only so it
+			   never counts local dev traffic. */
+			import.meta.env.PROD && (
+				<script
+					defer
+					src="https://static.cloudflareinsights.com/beacon.min.js"
+					data-cf-beacon='{"token": "e7a734aa00ef4cf980d95ee7126e0aa3"}'
+				/>
+			)
+		}
 	</body>
 </html>
