@@ -1,8 +1,20 @@
 ---
+import SocialLinks from "./SocialLinks.astro";
 const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
 	<span>© {year} NATHANIEL BURGESS · LAUNCESTON, TAS</span>
-	<span>41° S · 147° E</span>
+	<div class="footer-end">
+		<SocialLinks class="footer-social" />
+		<span>41° S · 147° E</span>
+	</div>
 </footer>
+
+<style>
+	.footer-end {
+		align-items: center;
+		display: flex;
+		gap: 18px;
+	}
+</style>

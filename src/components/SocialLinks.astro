@@ -7,27 +7,32 @@ interface Props {
 const { class: className = "" } = Astro.props;
 ---
 
-<ul class={`inline-flex items-center gap-2.5 ${className}`} role="list">
+<ul class={`social-links ${className}`} role="list">
 	{
-		SOCIAL_LINKS.map((icon) => (
+		SOCIAL_LINKS.map((link) => (
 			<li>
-				<a
-					href={icon.href}
-					target="_blank"
-					rel="noopener noreferrer"
-					aria-label={icon.label}
-					title={icon.label}
-					class="block h-6 w-6 text-slate-400 transition-colors hover:text-blue-500"
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						viewBox={icon.viewBox ?? "0 0 448 512"}
-						class="h-full w-full fill-current"
-					>
-						<path d={icon.pathD} />
-					</svg>
+				<a href={link.href} target="_blank" rel="noopener noreferrer">
+					{link.label}
 				</a>
 			</li>
 		))
 	}
 </ul>
+
+<style>
+	.social-links {
+		align-items: center;
+		display: inline-flex;
+		gap: 18px;
+	}
+	.social-links a {
+		color: var(--sub);
+		letter-spacing: 0.04em;
+		text-decoration: none;
+		text-transform: uppercase;
+		transition: color 0.15s ease;
+	}
+	.social-links a:hover {
+		color: var(--survey-text);
+	}
+</style>

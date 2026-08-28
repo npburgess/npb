@@ -14,7 +14,7 @@ const journey = [
 ];
 
 // Projects in the intended display order
-const order = ["thusword", "keirons-krafts", "compass", "boozers"];
+const order = ["thusword", "keirons-krafts", "compass", "boozers", "global-operation-centre", "bespoke-betty"];
 const projects = (await getCollection("projects", ({ data }) => !data.draft)).sort(
 	(a, b) => order.indexOf(a.id) - order.indexOf(b.id)
 );
@@ -62,7 +62,7 @@ const displayUrl = (u?: string) => (u ? u.replace(/^https?:\/\/(www\.)?/, "").re
 	</div>
 
 	<!-- WORK -->
-	<div id="work" class="shead"><span class="idx mono">02</span><h2 class="mono">SELECTED WORK</h2><span class="rule"></span></div>
+	<div id="work" class="shead"><span class="idx mono">02</span><h2 class="mono"><a class="work-link" href="/projects/">SELECTED WORK</a></h2><span class="rule"></span></div>
 	<div class="stops">
 		{
 			projects.map((p, i) => (
@@ -151,6 +151,17 @@ const displayUrl = (u?: string) => (u ? u.replace(/^https?:\/\/(www\.)?/, "").re
 	.hero .cta .ghost:hover {
 		border-color: var(--survey);
 		color: var(--survey);
+	}
+
+	.work-link {
+		color: inherit;
+		text-decoration: none;
+		transition: color 0.15s ease;
+	}
+	.work-link:hover {
+		color: var(--survey-text);
+		text-decoration: underline;
+		text-underline-offset: 3px;
 	}
 
 	.contact {

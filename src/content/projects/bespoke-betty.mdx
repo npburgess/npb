@@ -1,0 +1,37 @@
+---
+title: Bespoke Betty
+summary: A showcase site for a maker of handmade, made-to-order clothing — client-editable, with no backend to run.
+type: hobby
+featured: false
+liveUrl: https://bespokebetty.com.au
+tech: ["Astro", "Sveltia CMS", "Netlify", "Fraunces", "Inter"]
+date: 2026-08-27
+draft: false
+---
+
+## About
+
+Bespoke Betty makes handmade, made-to-order shirts, hoodies, jumpers and
+cushions. The site is a **portfolio, not a shop** — a single page that shows the
+work and opens a conversation through a contact form. The design direction,
+"Thread", is warm and tactile: Fraunces paired with Inter, a clay accent used
+with restraint, and dashed "stitch line" seams tying the sections together.
+
+## Notable
+
+- **Betty edits it herself.** The gallery and homepage copy are content-managed
+  through **Sveltia CMS** at `/admin` (GitHub login), so new pieces and text
+  changes don't need a developer.
+- **No backend to run.** The contact form uses **Netlify Forms** — submissions
+  are captured with a honeypot for spam and the visitor lands on a thank-you
+  page, all with zero server code.
+- **Rebrandable from tokens.** Colour, type and spacing live as design tokens in
+  one stylesheet, so the whole look can shift without touching markup.
+- Statically built and hosted on Netlify, live on its own domain with
+  auto-issued TLS.
+
+## Stack
+
+Astro static build, deployed to Netlify with Netlify Forms for contact and
+Sveltia CMS for client-side editing. Self-hosted Fraunces + Inter via
+Fontsource. Live at [bespokebetty.com.au](https://bespokebetty.com.au).

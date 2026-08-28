@@ -28,7 +28,5 @@ export const ARROW_PATH_D =
 
 export const SOCIAL_LINKS: IconDef[] = [
 	{ label: "GitHub", href: GITHUB_URL, pathD: GITHUB_PATH_D },
-	{ label: "Facebook", href: FACEBOOK_URL, pathD: FACEBOOK_PATH_D },
-	{ label: "LinkedIn", href: LINKEDIN_URL, pathD: LINKEDIN_PATH_D },
-	{ label: "Thusword", href: THUSWORD_URL, pathD: THUSWORD_PATH_D, viewBox: "0 0 1732 1732" }
+	{ label: "LinkedIn", href: LINKEDIN_URL, pathD: LINKEDIN_PATH_D }
 ];
