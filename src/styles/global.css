@@ -14,7 +14,7 @@
 	--line: oklch(0.22 0.012 90 / 0.18);
 	--line-soft: oklch(0.22 0.012 90 / 0.1);
 	--hair: oklch(0.22 0.012 90 / 0.22);
-	--muted: oklch(0.22 0.012 90 / 0.5);
+	--muted: oklch(0.22 0.012 90 / 0.62);
 	--body: oklch(0.22 0.012 90 / 0.75);
 	--grid: oklch(0.22 0.012 90 / 0.035);
 	--panel: oklch(0.22 0.012 90 / 0.025);
@@ -29,7 +29,7 @@ html[data-theme="dark"] {
 	--line: oklch(0.93 0.006 95 / 0.17);
 	--line-soft: oklch(0.93 0.006 95 / 0.09);
 	--hair: oklch(0.93 0.006 95 / 0.2);
-	--muted: oklch(0.93 0.006 95 / 0.45);
+	--muted: oklch(0.93 0.006 95 / 0.55);
 	--body: oklch(0.93 0.006 95 / 0.72);
 	--grid: oklch(0.93 0.006 95 / 0.045);
 	--panel: oklch(0.93 0.006 95 / 0.028);
