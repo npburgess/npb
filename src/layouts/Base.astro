@@ -1,14 +1,9 @@
 ---
-// Self-hosted fonts (same-origin; removes render-blocking Google Fonts requests).
-import "@fontsource/space-grotesk/400.css";
-import "@fontsource/space-grotesk/500.css";
-import "@fontsource/space-grotesk/700.css";
-import "@fontsource/inter/400.css";
-import "@fontsource/inter/500.css";
-import "@fontsource/ibm-plex-mono/400.css";
-import "@fontsource/ibm-plex-mono/500.css";
+// Self-hosted mono (same-origin; removes render-blocking Google Fonts requests).
+// Display/UI uses the Helvetica Neue system stack — no webfont to load.
+import "@fontsource/jetbrains-mono/400.css";
+import "@fontsource/jetbrains-mono/500.css";
 import "../styles/global.css";
-import ContourField from "../components/ContourField.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 import BackToTop from "../components/BackToTop.astro";
@@ -64,8 +59,24 @@ const jsonLd = {
 		<meta name="description" content={description} />
 		<meta name="author" content="Nathaniel Burgess" />
 		<meta name="robots" content="index, follow" />
-		<meta name="theme-color" content="#eaece9" />
+		<meta name="theme-color" content="#f3f2ee" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#1f1e1b" media="(prefers-color-scheme: dark)" />
 		<link rel="canonical" href={canonical} />
+
+		{/* Anti-flash: set data-theme before first paint. Mode persists to
+		   localStorage; auto resolves via OS preference. try/catch — private mode throws. */}
+		<script is:inline>
+			(function () {
+				try {
+					var mode = localStorage.getItem("npb-theme") || "auto";
+					var dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+					var t = mode === "auto" ? (dark ? "dark" : "light") : mode;
+					document.documentElement.setAttribute("data-theme", t);
+				} catch (e) {
+					document.documentElement.setAttribute("data-theme", "light");
+				}
+			})();
+		</script>
 
 		<!-- Open Graph -->
 		<meta property="og:title" content={title} />
@@ -92,16 +103,11 @@ const jsonLd = {
 		<title>{pageTitle}</title>
 	</head>
 	<body>
-		<ContourField />
-		<div class="frame">
-			<div class="wrap">
-				<Nav />
-				<main>
-					<slot />
-				</main>
-				<Footer />
-			</div>
-		</div>
+		<Nav />
+		<main>
+			<slot />
+		</main>
+		<Footer />
 		<BackToTop />
 		{
 			/* Cloudflare Web Analytics (cookieless). Public beacon token; prod-only so it

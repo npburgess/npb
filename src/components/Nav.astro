@@ -1,14 +1,254 @@
 ---
 const links = [
-	{ href: "/#journey", label: "journey" },
-	{ href: "/#how-i-work", label: "work" },
-	{ href: "/#contact", label: "contact" }
+	{ href: "/#path", label: "Path" },
+	{ href: "/#method", label: "Method" },
+	{ href: "/#work", label: "Work" },
+	{ href: "/#contact", label: "Contact" }
 ];
 ---
 
 <header class="bar">
-	<a href="/" class="brand mono">◈ N.BURGESS</a>
-	<nav class="mono">
+	<a href="/" class="brand">N. Burgess</a>
+
+	<nav class="navlinks" aria-label="Sections">
+		{links.map((link) => <a href={link.href}>{link.label}</a>)}
+	</nav>
+
+	<div class="bar-right">
+		<button
+			type="button"
+			id="menu-btn"
+			class="menu-btn"
+			aria-label="Open menu"
+			aria-expanded="false"
+			aria-controls="mobile-menu"
+		>
+			<span class="bars" aria-hidden="true"></span>
+		</button>
+		<button
+			type="button"
+			id="theme-toggle"
+			class="toggle"
+			aria-label="Switch colour theme"
+			title="Switch colour theme"
+		>
+			<span class="dot" aria-hidden="true"></span>
+			<span id="theme-label">Auto</span>
+		</button>
+	</div>
+
+	<nav id="mobile-menu" class="mobile-menu" aria-label="Sections" hidden>
 		{links.map((link) => <a href={link.href}>{link.label}</a>)}
 	</nav>
 </header>
+
+<style>
+	.bar {
+		position: sticky;
+		top: 0;
+		z-index: 30;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 16px;
+		padding: 13px clamp(18px, 3.5vw, 40px);
+		background: var(--bg);
+		border-bottom: 1px solid var(--line);
+		font-family: var(--font-mono);
+		font-size: 11px;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+	}
+	.brand {
+		font-weight: 500;
+	}
+	.navlinks {
+		display: flex;
+		gap: 26px;
+	}
+	.bar-right {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+	.toggle {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		background: transparent;
+		border: 1px solid var(--line);
+		color: var(--muted);
+		cursor: pointer;
+		font-family: var(--font-mono);
+		font-size: 10px;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		padding: 6px 11px;
+	}
+	.toggle:hover {
+		border-color: var(--accent);
+		color: var(--accent);
+	}
+	.dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--accent);
+		display: inline-block;
+	}
+
+	/* hamburger — hidden on desktop */
+	.menu-btn {
+		display: none;
+		width: 34px;
+		height: 30px;
+		place-items: center;
+		background: transparent;
+		border: 1px solid var(--line);
+		cursor: pointer;
+		padding: 0;
+	}
+	.menu-btn:hover {
+		border-color: var(--accent);
+	}
+	.bars,
+	.bars::before,
+	.bars::after {
+		content: "";
+		display: block;
+		width: 16px;
+		height: 1px;
+		background: var(--fg);
+		transition:
+			transform 0.2s ease,
+			opacity 0.2s ease;
+	}
+	.bars::before {
+		transform: translateY(-5px);
+	}
+	.bars::after {
+		transform: translateY(4px);
+	}
+	.menu-btn:hover .bars,
+	.menu-btn:hover .bars::before,
+	.menu-btn:hover .bars::after {
+		background: var(--accent);
+	}
+	/* open state → X */
+	.menu-btn[aria-expanded="true"] .bars {
+		background: transparent;
+	}
+	.menu-btn[aria-expanded="true"] .bars::before {
+		transform: translateY(0) rotate(45deg);
+	}
+	.menu-btn[aria-expanded="true"] .bars::after {
+		transform: translateY(-1px) rotate(-45deg);
+	}
+
+	/* dropdown panel under the header */
+	.mobile-menu {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		display: flex;
+		flex-direction: column;
+		background: var(--bg);
+		border-bottom: 1px solid var(--line);
+	}
+	.mobile-menu[hidden] {
+		display: none;
+	}
+	.mobile-menu a {
+		padding: 16px clamp(18px, 3.5vw, 40px);
+		border-top: 1px solid var(--line-soft);
+	}
+	.mobile-menu a:hover {
+		background: var(--accent-soft);
+		color: var(--accent);
+	}
+
+	@media (max-width: 900px) {
+		.navlinks {
+			display: none;
+		}
+		.menu-btn {
+			display: grid;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.bars,
+		.bars::before,
+		.bars::after {
+			transition: none;
+		}
+	}
+</style>
+
+<script>
+	type Mode = "auto" | "light" | "dark";
+	const KEY = "npb-theme";
+	const order: Mode[] = ["auto", "light", "dark"];
+
+	const root = document.documentElement;
+	const btn = document.getElementById("theme-toggle");
+	const label = document.getElementById("theme-label");
+	const mql = window.matchMedia("(prefers-color-scheme: dark)");
+
+	const getMode = (): Mode => {
+		try {
+			const m = localStorage.getItem(KEY) as Mode | null;
+			return m && order.includes(m) ? m : "auto";
+		} catch {
+			return "auto";
+		}
+	};
+	const resolve = (mode: Mode): "light" | "dark" =>
+		mode === "auto" ? (mql.matches ? "dark" : "light") : mode;
+
+	const apply = (mode: Mode) => {
+		const resolved = resolve(mode);
+		root.setAttribute("data-theme", resolved);
+		if (label) {
+			label.textContent = mode === "auto" ? `Auto · ${resolved}` : mode;
+		}
+	};
+
+	if (btn) {
+		apply(getMode());
+		btn.addEventListener("click", () => {
+			const next = order[(order.indexOf(getMode()) + 1) % order.length];
+			try {
+				localStorage.setItem(KEY, next);
+			} catch {
+				/* private mode — ignore */
+			}
+			apply(next);
+		});
+		mql.addEventListener("change", () => {
+			if (getMode() === "auto") apply("auto");
+		});
+	}
+
+	// Mobile menu
+	const menuBtn = document.getElementById("menu-btn");
+	const menu = document.getElementById("mobile-menu");
+	if (menuBtn && menu) {
+		const setOpen = (open: boolean) => {
+			menuBtn.setAttribute("aria-expanded", String(open));
+			menuBtn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+			menu.hidden = !open;
+		};
+		menuBtn.addEventListener("click", () => {
+			setOpen(menuBtn.getAttribute("aria-expanded") !== "true");
+		});
+		// close on link tap and on Escape
+		menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setOpen(false)));
+		document.addEventListener("keydown", (e) => {
+			if (e.key === "Escape" && menuBtn.getAttribute("aria-expanded") === "true") {
+				setOpen(false);
+				menuBtn.focus();
+			}
+		});
+	}
+</script>

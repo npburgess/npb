@@ -2,40 +2,46 @@
 import { getCollection } from "astro:content";
 import Base from "../../layouts/Base.astro";
 
-const order = ["thusword", "keirons-krafts", "compass", "boozers", "global-operation-centre", "bespoke-betty"];
+// Paid work first, then hobby — matches the home page order.
+const order = ["compass", "global-operation-centre", "thusword", "keirons-krafts", "bespoke-betty", "boozers"];
 const projects = (await getCollection("projects", ({ data }) => !data.draft)).sort(
 	(a, b) => order.indexOf(a.id) - order.indexOf(b.id)
 );
-const displayUrl = (u?: string) => (u ? u.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "") : "");
 ---
 
 <Base title="Projects | npb.me" description="Projects built by Nathaniel Burgess.">
-	<div class="shead projects-top"><span class="idx mono">◈</span><h2 class="mono">ALL PROJECTS</h2><span class="rule"></span></div>
-	<div class="stops">
-		{
-			projects.map((p, i) => (
-				<div class={`stop${p.data.featured ? " feat" : ""}`}>
-					<div>
-						<div class="n mono">
-							{String(i + 1).padStart(2, "0")}
-							{p.data.featured ? " · FEATURED" : ""}
-						</div>
-						<h3><a href={`/projects/${p.id}`}>{p.data.title}</a></h3>
-						<div class="d">{p.data.summary}</div>
-					</div>
-					<div class="meta">
-						<span class={`tag${p.data.type === "work" ? " work" : ""}`}>{p.data.type}</span>
-						<div class="coord mono">{displayUrl(p.data.liveUrl)}</div>
-						<a class="go mono" href={`/projects/${p.id}`} aria-label={`Read about ${p.data.title}`}>read →</a>
-					</div>
+	<section class="section railed projects">
+		<div class="rail"><span class="num">—</span><br /><span class="lbl">WORK</span></div>
+		<div class="rail-body">
+			<h1 class="projects-h1">All projects.</h1>
+			<div class="worktable">
+				<div class="workrow head">
+					<span>Project</span><span>Description</span><span>Type</span><span class="r">Link</span>
 				</div>
-			))
-		}
-	</div>
+				{
+					projects.map((p) => (
+						<a class="workrow" href={`/projects/${p.id}`} aria-label={p.data.title}>
+							<span class="name">{p.data.title}</span>
+							<span class="desc">{p.data.summary}</span>
+							<span class={`type-tag ${p.data.type}`}>{p.data.type}</span>
+							<span class="link">Case ↗</span>
+						</a>
+					))
+				}
+			</div>
+		</div>
+	</section>
 </Base>
 
 <style>
-	.projects-top {
-		padding-top: 70px;
+	.rail-body {
+		padding: 52px 0;
+	}
+	.projects-h1 {
+		margin: 0 0 34px;
+		font-size: clamp(40px, 6vw, 72px);
+		line-height: 0.94;
+		letter-spacing: -0.04em;
+		font-weight: 500;
 	}
 </style>

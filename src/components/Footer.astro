@@ -1,20 +1,29 @@
 ---
-import SocialLinks from "./SocialLinks.astro";
 const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-	<span>© {year} NATHANIEL BURGESS · LAUNCESTON, TAS</span>
-	<div class="footer-end">
-		<SocialLinks class="footer-social" />
-		<span>41° S · 147° E</span>
+	<div class="inner">
+		<span>© {year} Nathaniel Burgess</span>
+		<span>Launceston · Tasmania</span>
 	</div>
 </footer>
 
 <style>
-	.footer-end {
-		align-items: center;
+	.site-footer {
+		padding: 0 clamp(18px, 3.5vw, 40px);
+	}
+	.inner {
 		display: flex;
-		gap: 18px;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 12px;
+		padding: 16px 0 28px;
+		border-top: 1px solid var(--line);
+		color: var(--muted);
+		font-family: var(--font-mono);
+		font-size: 10px;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
 	}
 </style>

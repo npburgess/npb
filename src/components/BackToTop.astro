@@ -1,124 +1,61 @@
 ---
-// The hero compass "returned" as a back-to-top control: fades/zips in once the
-// hero scrolls away (also tucking the hero rose), points due north, scrolls to top.
+// Simple scroll-to-top: a square hairline button that fades in past the fold
+// and fades back out near the top. No motion beyond opacity.
 ---
 
-<button class="toTop" id="toTop" aria-label="Back to top" title="Back to top — due north">
-	<span class="n" aria-hidden="true">N</span>
-	<svg viewBox="0 0 100 100" aria-hidden="true">
-		<circle cx="50" cy="50" r="46" fill="none" stroke="#0f3d3e" stroke-width="3" />
-		<circle cx="50" cy="50" r="33" fill="none" stroke="#c7d0ca" stroke-width="2" />
-		<path d="M50 8 L57 50 L50 92 L43 50 Z" fill="#e2622f" />
-		<path d="M8 50 L50 43 L92 50 L50 57 Z" fill="#1b2a27" />
-	</svg>
+<button class="to-top" id="to-top" aria-label="Back to top" title="Back to top">
+	<span aria-hidden="true">↑</span>
 </button>
 
 <style>
-	.toTop {
+	.to-top {
 		position: fixed;
-		right: 24px;
-		bottom: 64px;
-		width: 54px;
-		height: 54px;
-		border-radius: 50%;
-		background: color-mix(in srgb, var(--paper) 88%, transparent);
-		backdrop-filter: blur(3px);
-		border: 1px solid var(--ink);
+		right: clamp(18px, 3.5vw, 40px);
+		bottom: clamp(18px, 3.5vw, 40px);
+		z-index: 40;
+		width: 42px;
+		height: 42px;
 		display: grid;
 		place-items: center;
+		background: var(--bg);
+		border: 1px solid var(--hair);
+		color: var(--fg);
 		cursor: pointer;
-		z-index: 40;
+		font-family: var(--font-mono);
+		font-size: 14px;
+		line-height: 1;
 		opacity: 0;
-		transform: translateY(12px) scale(0.8);
 		pointer-events: none;
-		transition: opacity 0.35s, transform 0.35s, border-color 0.2s;
-		box-shadow: 0 6px 22px rgba(0, 0, 0, 0.12);
+		transition:
+			opacity 0.3s ease,
+			border-color 0.2s ease,
+			color 0.2s ease;
 	}
-	.toTop.show {
+	.to-top.show {
 		opacity: 1;
-		transform: none;
 		pointer-events: auto;
 	}
-	.toTop svg {
-		width: 30px;
-		height: 30px;
-		display: block;
-		/* smaller than the button so the paper gap between the button border and the
-		   compass ring is symmetric top/bottom, with room for the N in the top gap */
-	}
-	/* N in the paper gap between the button border and the compass's dark ring */
-	.toTop .n {
-		position: absolute;
-		top: 1px;
-		left: 0;
-		right: 0;
-		text-align: center;
-		font-family: "IBM Plex Mono", monospace;
-		font-weight: 700;
-		font-size: 11px;
-		line-height: 1;
-		color: var(--survey);
-		pointer-events: none;
-	}
-	.toTop.show:hover {
-		border-color: var(--survey);
-		transform: scale(1.08);
-	}
-	.toTop.zip {
-		animation: zipDown 0.6s cubic-bezier(0.34, 0.02, 0.2, 1) both;
-	}
-	/* pages without a hero compass: pure fade, no slide/shrink */
-	.toTop.simple,
-	.toTop.simple.show,
-	.toTop.simple.show:hover {
-		transform: none;
-	}
-	@keyframes zipDown {
-		from {
-			transform: translate(-7vw, -54vh) scale(3.1);
-		}
-		to {
-			transform: none;
-		}
+	.to-top:hover {
+		border-color: var(--accent);
+		color: var(--accent);
 	}
 	@media (prefers-reduced-motion: reduce) {
-		.toTop {
-			transition: opacity 0.2s;
-		}
-		.toTop.show {
-			transform: none;
+		.to-top {
+			transition: opacity 0.2s ease;
 		}
 	}
 </style>
 
 <script>
-	const toTop = document.getElementById("toTop");
-	if (toTop) {
-		const heroRose = document.querySelector(".rose");
+	const btn = document.getElementById("to-top");
+	if (btn) {
 		const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-		// The zip/tuck only applies where a hero compass exists (the homepage);
-		// elsewhere the button is a plain fade in/out.
-		if (!heroRose) toTop.classList.add("simple");
-		let revealed = false;
 		const onScroll = () => {
-			const past = window.scrollY > 320;
-			if (past && !revealed) {
-				revealed = true;
-				heroRose?.classList.add("tucked");
-				toTop.classList.add("show");
-				if (!reduceMotion && heroRose) {
-					toTop.classList.add("zip");
-					toTop.addEventListener("animationend", () => toTop.classList.remove("zip"), { once: true });
-				}
-			} else if (!past && revealed) {
-				revealed = false;
-				heroRose?.classList.remove("tucked");
-				toTop.classList.remove("show", "zip");
-			}
+			btn.classList.toggle("show", window.scrollY > 320);
 		};
 		window.addEventListener("scroll", onScroll, { passive: true });
 		onScroll();
-		toTop.addEventListener("click", () => {
+		btn.addEventListener("click", () => {
 			window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
 		});
 	}

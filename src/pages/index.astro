@@ -1,258 +1,373 @@
 ---
-import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
-import CompassRose from "../components/CompassRose.astro";
-import JourneyMap from "../components/JourneyMap.astro";
 import ContactModal from "../components/ContactModal.astro";
 
-// Biographical journey (one-off, inline)
-const journey = [
-	{ n: "WAYPOINT 01 · ORIGIN", title: "North-West Coast", desc: "Where it started. Grew up on Tasmania's NW coast — the long, quiet edge of the island.", right: { yr: "EST 1985", coord: "41° S · 145° E" } },
-	{ n: "WAYPOINT 02", title: "Hobart, Tasmania", desc: "Moved south to study computer science. Learned to build things that run.", right: { yr: "UTAS", coord: "42° S · 147° E" } },
-	{ n: "WAYPOINT 03", title: "Los Angeles, California", desc: "Twelve years building software a hemisphere from home. Got married and had three kids and a dog along the way.", right: { yr: "~12 yrs", coord: "34° N · 118° W" } },
-	{ n: "WAYPOINT 04 · YOU ARE HERE", title: "Launceston, Tasmania", desc: "Brought everyone home three years ago. Same island I started on, wiser and outnumbered.", here: true, right: { tag: "now", coord: "41° S · 147° E" } }
+// Path — biographical waypoints (systematic redesign; inline, no map).
+const path = [
+	{ kicker: "1985", title: "North-west coast", desc: "Born and raised on the North West Coast of Tasmania, the city by the sea." },
+	{ kicker: "Hobart · UTAS", title: "Computer science", desc: "Moved south to study. Turned an aptitude into a career." },
+	{ kicker: "12 years", title: "Los Angeles", desc: "A hemisphere from home. Got married, rescued a dog and had three kids along the way." },
+	{ kicker: "Now · 3 yrs", title: "Launceston", desc: "Brought everyone home. Bikes to school, the garden, the squash court. A balance that made the move worth it.", now: true }
 ];
 
-// Projects in the intended display order
-const order = ["thusword", "keirons-krafts", "compass", "boozers", "global-operation-centre", "bespoke-betty"];
-const projects = (await getCollection("projects", ({ data }) => !data.draft)).sort(
-	(a, b) => order.indexOf(a.id) - order.indexOf(b.id)
-);
-const displayUrl = (u?: string) => (u ? u.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "") : "");
+// Work — paid work first, then hobby. Descriptions tuned for the table rhythm.
+const work = [
+	{ name: "Cycle Inspect", desc: "A bike-inspection platform — field inspections, dashboards and PDF reports.", type: "work", href: "/projects/compass" },
+	{ name: "Global Operation Centre", desc: "Data visualisation for on-call engineers and field technicians at Firmus.", type: "work", href: "/projects/global-operation-centre" },
+	{ name: "Thusword", desc: "A once-a-day word game — a freeform crossword solved by progressive reveal.", type: "hobby", href: "/projects/thusword" },
+	{ name: "Keiron's Krafts", desc: "An online storefront for handmade goods, with invoicing and image uploads.", type: "hobby", href: "/projects/keirons-krafts" },
+	{ name: "Bespoke Betty", desc: "A showcase site for made-to-order clothing. Client-editable, no backend to run.", type: "hobby", href: "/projects/bespoke-betty" },
+	{ name: "Boozers Squash", desc: "A single-page marketing site for a Launceston squash club.", type: "hobby", href: "/projects/boozers" }
+];
+
+const stack = ["Typescript", "React", "Astro", "Python", "Postgres", "A11y", "Claude Code"];
 ---
 
 <Base seoTitle="Nathaniel Burgess — Software Engineer, Launceston Tasmania">
-	<!-- HERO -->
-	<section class="hero">
-		<div>
-			<div class="coord mono">CURRENT POSITION · 41° S &nbsp; 147° E · LAUNCESTON</div>
-			<h1 class="disp">Software engineer,<br />at the far end of the map.</h1>
-			<p>
-				I grew up on Tasmania's north-west coast, learned to code in Hobart, spent twelve years
-				building software in Los Angeles, then brought my family home.
-			</p>
-			<div class="cta">
-				<a class="solid" href="#work">View work ↓</a>
-				<a class="ghost" href="#contact" data-contact>Say g'day</a>
+	{/* ---- HERO ---- */}
+	<section id="top" class="section hero">
+		<div class="hero-grid">
+			<div class="hero-head">
+				<div class="eyebrow hero-eyebrow">
+					<span>Software engineer</span><span class="slash">/</span><span>Launceston, Tasmania</span>
+				</div>
+				<h1 class="hero-h1">Nathaniel<br />Burgess</h1>
+			</div>
+
+			<div class="hero-lede">
+				<p>
+					Sixteen years building software — twelve of them in Los Angeles, the rest back home on
+					the island I grew up on. Modern TypeScript stack, plain-language explanations, work that
+					stays maintainable.
+				</p>
+				<div class="hero-cta">
+					<a class="btn btn-solid" href="#work">View work ↓</a>
+					<a class="btn btn-ghost" href="#contact" data-contact>Say g'day</a>
+				</div>
+			</div>
+
+			<div class="hero-spec">
+				<dl class="spec">
+					<div><dt>Exp</dt><dd>16 yrs</dd></div>
+					<div><dt>Current</dt><dd>Cycle Inspect</dd></div>
+					<div><dt>Stack</dt><dd>TS / PY</dd></div>
+					<div><dt>Mode</dt><dd>Hybrid</dd></div>
+					<div><dt>Base</dt><dd>Launceston</dd></div>
+				</dl>
+			</div>
+
+			<div class="hero-portrait">
+				<img
+					src="/portrait.png"
+					width="800"
+					height="1000"
+					alt="Nathaniel Burgess"
+					loading="eager"
+					decoding="async"
+				/>
 			</div>
 		</div>
-		<CompassRose />
 	</section>
 
-	<!-- LIFE -->
-	<div id="life" class="shead"><span class="idx mono">01</span><h2 class="mono">LIFE IN LAUNCESTON</h2><span class="rule"></span></div>
-	<div class="prose">
-		<p>
-			Home is Launceston, in northern Tasmania — my wife, our three kids and the dog. We're
-			all in on this place: bikes to school and work, Saturday mornings at the farmers market,
-			laps at the pool, and any excuse for a trip to the beach or to visit family. Travelling
-			together is the other great love.
-		</p>
-		<p>
-			When I'm away from the keyboard you'll find me in the garden, on a squash court, having a
-			drink with mates, or chatting over the fence with the neighbours. This life — and the
-			balance that protects it — is the whole reason we came home.
-		</p>
-	</div>
-
-	<!-- JOURNEY -->
-	<div id="journey" class="shead"><span class="idx mono">02</span><h2 class="mono">THE LONG WAY HOME</h2><span class="rule"></span></div>
-	<JourneyMap />
-	<div class="stops">
-		{
-			journey.map((w) => (
-				<div class={`stop${w.here ? " here" : ""}`}>
-					<div>
-						<div class="n mono">{w.n}</div>
-						<h3>{w.title}</h3>
-						<div class="d">{w.desc}</div>
-					</div>
-					<div class="meta">
-						{w.right.yr && <span class="yr mono">{w.right.yr}</span>}
-						{w.right.tag && <span class="tag now">{w.right.tag}</span>}
-						<div class="coord mono">{w.right.coord}</div>
-					</div>
-				</div>
-			))
-		}
-	</div>
-
-	<!-- HOW I WORK -->
-	<div id="how-i-work" class="shead"><span class="idx mono">03</span><h2 class="mono">HOW I WORK</h2><span class="rule"></span></div>
-	<div class="prose">
-		<p>
-			I'm a people person first. I like being in the office a few days a week — face-to-face
-			collaboration, a whiteboard and a coffee with the team — because teamwork makes the dream
-			work, and the best software comes from people who actually talk to each other. I try to
-			stay approachable and to explain the technical stuff in plain terms, so everyone's along
-			for the ride, not just the engineers.
-		</p>
-		<p>
-			On the build side I'm happiest in a modern TypeScript stack — React and Astro on the
-			front end, Python behind it — shipping things that are tested, accessible and fast. AI
-			tools like Claude Code are part of my day-to-day, helping me move quicker without losing
-			the plot. I care about work that stays maintainable, and a pace that stays sustainable.
-		</p>
-	</div>
-
-	<!-- WORK -->
-	<div id="work" class="shead"><span class="idx mono">04</span><h2 class="mono"><a class="work-link" href="/projects/">SELECTED WORK</a></h2><span class="rule"></span></div>
-	<div class="stops">
-		{
-			projects.map((p, i) => (
-				<div class={`stop${p.data.featured ? " feat" : ""}`}>
-					<div>
-						<div class="n mono">WAYPOINT {String(i + 1).padStart(2, "0")}{p.data.featured ? " · FEATURED" : ""}</div>
-						<h3><a href={`/projects/${p.id}`}>{p.data.title}</a></h3>
-						<div class="d">{p.data.summary}</div>
-					</div>
-					<div class="meta">
-						<span class={`tag${p.data.type === "work" ? " work" : ""}`}>{p.data.type}</span>
-						<div class="coord mono">{displayUrl(p.data.liveUrl)}</div>
-						{p.data.liveUrl && (
-							<a class="go mono" href={p.data.liveUrl} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${p.data.title}`}>
-								visit ↗
-							</a>
-						)}
-					</div>
-				</div>
-			))
-		}
-	</div>
-
-	<!-- CONTACT -->
-	<section id="contact" class="contact">
-		<div>
-			<h2 class="disp">Get in touch.</h2>
-			<p>Working on something, hiring, or just want to say hello? Drop me a line.</p>
+	{/* ---- 01 PATH ---- */}
+	<section id="path" class="section railed">
+		<div class="rail"><span class="num">01</span><br /><span class="lbl">PATH</span></div>
+		<div class="rail-body">
+			<div class="path-grid">
+				{
+					path.map((p) => (
+						<div class={`path-cell${p.now ? " now" : ""}`}>
+							<div class={`label path-kicker${p.now ? " accent" : ""}`}>{p.kicker}</div>
+							<div class="path-title">{p.title}</div>
+							<p class="path-desc">{p.desc}</p>
+						</div>
+					))
+				}
+			</div>
 		</div>
-		<button class="contact-open mono" data-contact>Open contact form ↗</button>
+	</section>
+
+	{/* ---- 02 METHOD ---- */}
+	<section id="method" class="section railed">
+		<div class="rail"><span class="num">02</span><br /><span class="lbl">METHOD</span></div>
+		<div class="rail-body method-body">
+			<div class="method-grid">
+				<div>
+					<h2 class="method-h2">People first, then the code.</h2>
+					<p class="method-p">
+						I like being in the office a few days a week: a whiteboard, a coffee, the team in one
+						room. The best software comes from people who actually talk to each other, so I keep the
+						technical part in plain terms and make sure everyone understands the journey, not just the
+						engineers.
+					</p>
+				</div>
+				<div>
+					<h2 class="method-h2">Tested, accessible, fast.</h2>
+					<p class="method-p">
+						A modern TypeScript stack with Python behind it. AI tooling is part of the day-to-day
+						without losing the plot. I care about work that stays maintainable and a pace that stays
+						sustainable.
+					</p>
+					<div class="chips">
+						{stack.map((t) => <span class="chip">{t}</span>)}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{/* ---- 03 WORK ---- */}
+	<section id="work" class="section railed">
+		<div class="rail"><span class="num">03</span><br /><span class="lbl">WORK</span></div>
+		<div class="rail-body work-body">
+			<div class="worktable">
+				<div class="workrow head">
+					<span>Project</span><span>Description</span><span>Type</span><span class="r">Link</span>
+				</div>
+				{
+					work.map((w) => (
+						<a class="workrow" href={w.href} aria-label={w.name}>
+							<span class="name">{w.name}</span>
+							<span class="desc">{w.desc}</span>
+							<span class={`type-tag ${w.type}`}>{w.type}</span>
+							<span class="link">Case ↗</span>
+						</a>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	{/* ---- 04 CONTACT ---- */}
+	<section id="contact" class="section railed">
+		<div class="rail"><span class="num">04</span><br /><span class="lbl">CONTACT</span></div>
+		<div class="rail-body contact-body">
+			<h2 class="contact-h2">Get in touch.</h2>
+			<p class="contact-p">
+				Hiring, working on something, or just want to say hello — drop me a line.
+			</p>
+			<div class="contact-actions">
+				<button type="button" class="btn btn-solid" data-contact>Say g'day ↗</button>
+				<a class="btn btn-ghost" href="https://github.com/npburgess">GitHub</a>
+				<a class="btn btn-ghost" href="https://www.linkedin.com/pub/nathaniel-burgess/30/942/b69">LinkedIn</a>
+			</div>
+		</div>
 	</section>
 
 	<ContactModal />
 </Base>
 
 <style>
-	.hero {
-		padding: 66px 0 54px;
+	/* ---- hero ---- */
+	.hero-grid {
 		display: grid;
-		grid-template-columns: 1fr auto;
-		gap: 30px;
-		align-items: end;
+		grid-template-columns: repeat(12, 1fr);
 	}
-	.hero .coord {
-		font-size: 12px;
-		letter-spacing: 0.12em;
-		color: var(--survey-text);
+	.hero-head {
+		grid-column: 1 / span 12;
+		/* symmetric top/bottom; the extra bottom room lets the H1 "g" descender
+		   clear the divider rule despite line-height: 0.85 */
+		padding: clamp(48px, 6vw, 84px) 0 clamp(48px, 6vw, 84px);
 	}
-	.hero h1 {
-		font-size: clamp(38px, 7vw, 76px);
-		line-height: 0.95;
-		font-weight: 700;
-		letter-spacing: -0.02em;
-		margin: 14px 0 20px;
+	.hero-eyebrow {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px 22px;
+		margin-bottom: clamp(24px, 4vw, 40px);
 	}
-	.hero p {
-		max-width: 40ch;
-		color: var(--sub);
-		font-size: 17px;
-		line-height: 1.55;
+	.hero-eyebrow .slash {
+		color: var(--muted);
 	}
-	.hero .cta {
-		display: inline-flex;
+	.hero-h1 {
+		margin: 0;
+		font-size: clamp(52px, 11.5vw, 168px);
+		line-height: 0.85;
+		letter-spacing: -0.045em;
+		font-weight: 500;
+		text-wrap: balance;
+	}
+	.hero-lede {
+		grid-column: 1 / span 5;
+		padding: 30px 40px 56px 0;
+		border-top: 1px solid var(--line);
+	}
+	.hero-lede p {
+		margin: 0;
+		font-size: clamp(17px, 1.5vw, 20px);
+		line-height: 1.5;
+		max-width: 36ch;
+		text-wrap: pretty;
+	}
+	.hero-cta {
+		display: flex;
 		gap: 10px;
-		margin-top: 26px;
+		flex-wrap: wrap;
+		margin-top: 32px;
 	}
-	.hero .cta a {
-		text-decoration: none;
-		font-family: "IBM Plex Mono", monospace;
-		font-size: 13px;
-		padding: 9px 16px;
-		border-radius: 6px;
-		cursor: pointer;
+	.hero-spec {
+		grid-column: 6 / span 3;
+		padding: 30px 24px 56px 0;
+		border-top: 1px solid var(--line);
+		border-left: 1px solid var(--line-soft);
 	}
-	.hero .cta .solid {
-		background: var(--ink);
-		color: var(--paper);
+	.spec {
+		margin: 0;
+		padding-left: 24px;
+		font-family: var(--font-mono);
+		font-size: 11px;
+		line-height: 2.2;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
 	}
-	.hero .cta .solid:hover {
-		background: var(--teal);
-	}
-	.hero .cta .ghost {
-		border: 1px solid var(--ink);
-		color: var(--ink);
-	}
-	.hero .cta .ghost:hover {
-		border-color: var(--survey);
-		color: var(--survey);
-	}
-
-	.prose {
-		max-width: 62ch;
-		padding: 22px 0 6px;
-	}
-	.prose p {
-		color: var(--sub);
-		font-size: 17px;
-		line-height: 1.6;
-		margin: 0 0 16px;
-	}
-	.prose p:last-child {
-		margin-bottom: 0;
-	}
-
-	.work-link {
-		color: inherit;
-		text-decoration: none;
-		transition: color 0.15s ease;
-	}
-	.work-link:hover {
-		color: var(--survey-text);
-		text-decoration: underline;
-		text-underline-offset: 3px;
-	}
-
-	.contact {
-		margin: 60px 0 30px;
-		background: var(--ink);
-		color: var(--paper);
-		border-radius: 14px;
-		padding: 40px;
+	.spec > div {
 		display: flex;
 		justify-content: space-between;
-		align-items: center;
-		gap: 24px;
-		flex-wrap: wrap;
+		border-bottom: 1px solid var(--line-soft);
 	}
-	.contact h2 {
-		font-family: "Space Grotesk", sans-serif;
-		font-size: 30px;
-		font-weight: 500;
+	.spec > div:last-child {
+		border-bottom: 0;
+	}
+	.spec dt {
+		color: var(--muted);
+	}
+	.spec dd {
 		margin: 0;
+		color: var(--fg);
 	}
-	.contact p {
-		color: #b7c2bd;
-		margin: 8px 0 0;
-		max-width: 40ch;
-		font-size: 15px;
+	.hero-portrait {
+		grid-column: 9 / span 4;
+		border-top: 1px solid var(--line);
+		border-left: 1px solid var(--line-soft);
+		min-height: 240px;
+		display: flex;
+		align-items: flex-end;
+		justify-content: center;
+		overflow: hidden;
+		background: var(--panel);
 	}
-	.contact-open {
-		border: 0;
-		background: var(--survey-text);
-		color: #fff;
-		padding: 12px 22px;
-		border-radius: 8px;
-		font-size: 14px;
-		white-space: nowrap;
-		cursor: pointer;
-	}
-	.contact-open:hover {
-		background: #fff;
-		color: var(--ink);
+	.hero-portrait img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		object-position: bottom center;
 	}
 
-	@media (max-width: 680px) {
-		.hero {
+	/* ---- rail body shared ---- */
+	.rail-body {
+		padding: 52px 0;
+	}
+
+	/* ---- 01 path ---- */
+	.path-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		border-top: 1px solid var(--line);
+	}
+	.path-cell {
+		padding: 22px 24px;
+		border-right: 1px solid var(--line-soft);
+	}
+	.path-cell:first-child {
+		padding-left: 0;
+	}
+	.path-cell.now {
+		background: var(--accent-soft);
+		border-right: 0;
+	}
+	.path-kicker {
+		margin-bottom: 14px;
+	}
+	.path-kicker.accent {
+		color: var(--accent);
+	}
+	.path-title {
+		font-size: 22px;
+		letter-spacing: -0.02em;
+		margin-bottom: 8px;
+	}
+	.path-desc {
+		margin: 0;
+		font-size: 14px;
+		line-height: 1.55;
+		color: var(--body);
+	}
+
+	/* ---- 02 method ---- */
+	.method-body {
+		border-top: 1px solid var(--line);
+	}
+	.method-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: clamp(24px, 5vw, 56px);
+	}
+	.method-h2 {
+		margin: 0 0 18px;
+		font-size: clamp(26px, 3vw, 34px);
+		font-weight: 500;
+		letter-spacing: -0.03em;
+	}
+	.method-p {
+		margin: 0 0 26px;
+		font-size: 16px;
+		line-height: 1.65;
+		color: var(--body);
+		max-width: 46ch;
+		text-wrap: pretty;
+	}
+	.method-grid > div:first-child .method-p {
+		margin-bottom: 0;
+	}
+	.chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+	}
+
+	/* ---- 04 contact ---- */
+	.contact-body {
+		padding: clamp(56px, 8vw, 96px) 0 52px;
+	}
+	.contact-h2 {
+		margin: 0 0 24px;
+		font-size: clamp(40px, 6vw, 84px);
+		line-height: 0.94;
+		letter-spacing: -0.04em;
+		font-weight: 500;
+	}
+	.contact-p {
+		margin: 0 0 34px;
+		font-size: 17px;
+		line-height: 1.6;
+		max-width: 40ch;
+		color: var(--body);
+	}
+	.contact-actions {
+		display: flex;
+		gap: 10px;
+		flex-wrap: wrap;
+	}
+
+	/* ---- responsive ---- */
+	@media (max-width: 900px) {
+		.hero-grid > * {
+			grid-column: 1 / span 12;
+			border-left: 0;
+		}
+		.hero-lede {
+			padding-right: 0;
+		}
+		.hero-spec {
+			padding-right: 0;
+		}
+		.path-grid {
+			grid-template-columns: 1fr 1fr;
+		}
+		.path-cell:nth-child(2n) {
+			border-right: 0;
+		}
+		.method-grid {
 			grid-template-columns: 1fr;
 		}
 	}

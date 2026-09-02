@@ -17,137 +17,114 @@ const displayUrl = (u?: string) => (u ? u.replace(/^https?:\/\/(www\.)?/, "").re
 ---
 
 <Base title={`${title} | npb.me`} description={summary}>
-	<article class="case">
-		<a class="back mono" href="/projects">← all projects</a>
+	<section class="section case-section">
+		<article class="case">
+			<a class="back label" href="/projects">← All projects</a>
 
-		<div class="case-head">
-			<h1 class="disp">{title}</h1>
-			<span class={`tag${type === "work" ? " work" : ""}`}>{type}</span>
-		</div>
-		<p class="lede">{summary}</p>
+			<div class="case-head">
+				<h1 class="case-h1">{title}</h1>
+				<span class={`type-tag ${type}`}>{type}</span>
+			</div>
+			<p class="lede">{summary}</p>
 
-		{
-			tech.length > 0 && (
-				<ul class="tech">
-					{tech.map((t) => (
-						<li class="mono">{t}</li>
-					))}
-				</ul>
-			)
-		}
-
-		<div class="links mono">
 			{
-				liveUrl && (
-					<a href={liveUrl} target="_blank" rel="noopener noreferrer">
-						{displayUrl(liveUrl)} ↗
-					</a>
+				tech.length > 0 && (
+					<ul class="tech">
+						{tech.map((t) => (
+							<li class="chip">{t}</li>
+						))}
+					</ul>
 				)
 			}
-			{
-				repoUrl && (
-					<a href={repoUrl} target="_blank" rel="noopener noreferrer">
-						source ↗
-					</a>
-				)
-			}
-		</div>
 
-		<div class="body">
-			<Content />
-		</div>
-	</article>
+			<div class="links">
+				{
+					liveUrl && (
+						<a class="btn btn-ghost" href={liveUrl} target="_blank" rel="noopener noreferrer">
+							{displayUrl(liveUrl)} ↗
+						</a>
+					)
+				}
+				{
+					repoUrl && (
+						<a class="btn btn-ghost" href={repoUrl} target="_blank" rel="noopener noreferrer">
+							Source ↗
+						</a>
+					)
+				}
+			</div>
+
+			<div class="body">
+				<Content />
+			</div>
+		</article>
+	</section>
 </Base>
 
 <style>
+	.case-section {
+		border-bottom: 0;
+	}
 	.case {
-		max-width: 44rem;
-		padding: 60px 0 40px;
+		max-width: 46rem;
+		padding: 52px 0;
 	}
 	.back {
-		font-size: 13px;
-		color: var(--sub);
-		text-decoration: none;
+		display: inline-block;
 	}
 	.back:hover {
-		color: var(--survey);
+		color: var(--accent);
 	}
 	.case-head {
 		display: flex;
-		align-items: center;
-		gap: 12px;
-		margin: 18px 0 6px;
+		align-items: baseline;
+		gap: 14px;
+		margin: 24px 0 8px;
 	}
-	.case-head h1 {
-		font-family: "Space Grotesk", sans-serif;
-		font-size: clamp(32px, 5vw, 48px);
-		font-weight: 700;
-		letter-spacing: -0.02em;
+	.case-h1 {
 		margin: 0;
-	}
-	.tag {
-		display: inline-block;
-		padding: 3px 9px;
-		border: 1px solid var(--ink);
-		border-radius: 20px;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
-		font-size: 10px;
-		font-family: "IBM Plex Mono", monospace;
-	}
-	.tag.work {
-		background: var(--ink);
-		color: var(--paper);
+		font-size: clamp(34px, 6vw, 60px);
+		line-height: 0.95;
+		letter-spacing: -0.04em;
+		font-weight: 500;
 	}
 	.lede {
-		color: var(--sub);
+		margin: 0 0 22px;
+		color: var(--body);
 		font-size: 18px;
 		line-height: 1.55;
 		max-width: 52ch;
-		margin: 0 0 18px;
 	}
 	.tech {
 		list-style: none;
 		display: flex;
 		flex-wrap: wrap;
-		gap: 8px;
+		gap: 6px;
 		padding: 0;
-		margin: 0 0 18px;
-	}
-	.tech li {
-		font-size: 11px;
-		color: var(--sub);
-		background: rgba(15, 61, 62, 0.07);
-		border-radius: 4px;
-		padding: 3px 9px;
+		margin: 0 0 22px;
 	}
 	.links {
 		display: flex;
-		gap: 20px;
-		font-size: 14px;
-		margin-bottom: 34px;
-	}
-	.links a {
-		color: var(--teal);
-		text-decoration: none;
-	}
-	.links a:hover {
-		color: var(--survey);
+		flex-wrap: wrap;
+		gap: 10px;
+		margin-bottom: 40px;
 	}
 
 	/* case-study body */
 	.body {
-		border-top: 1px solid var(--contour);
-		padding-top: 28px;
-		color: #33413c;
+		border-top: 1px solid var(--line);
+		padding-top: 30px;
+		color: var(--body);
+		font-size: 16px;
 		line-height: 1.7;
+		max-width: 46ch;
 	}
 	.body :global(h2) {
-		font-family: "Space Grotesk", sans-serif;
-		font-size: 22px;
-		font-weight: 600;
-		color: var(--ink);
-		margin: 30px 0 10px;
+		font-size: clamp(22px, 3vw, 28px);
+		font-weight: 500;
+		letter-spacing: -0.03em;
+		color: var(--fg);
+		margin: 34px 0 12px;
 	}
 	.body :global(p) {
 		margin: 0 0 16px;
@@ -160,23 +137,24 @@ const displayUrl = (u?: string) => (u ? u.replace(/^https?:\/\/(www\.)?/, "").re
 		margin: 4px 0;
 	}
 	.body :global(a) {
-		color: var(--teal);
+		color: var(--accent);
+		text-decoration: underline;
+		text-underline-offset: 3px;
 	}
 	.body :global(strong) {
-		color: var(--ink);
+		color: var(--fg);
 	}
 	.body :global(blockquote) {
-		border-left: 3px solid var(--survey);
+		border-left: 2px solid var(--accent);
 		margin: 20px 0;
 		padding: 4px 0 4px 16px;
-		color: var(--sub);
-		font-style: italic;
+		color: var(--muted);
 	}
 	.body :global(code) {
-		font-family: "IBM Plex Mono", monospace;
+		font-family: var(--font-mono);
 		font-size: 0.9em;
-		background: rgba(15, 61, 62, 0.08);
+		background: var(--panel);
+		border: 1px solid var(--line-soft);
 		padding: 1px 5px;
-		border-radius: 4px;
 	}
 </style>

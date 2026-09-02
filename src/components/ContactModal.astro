@@ -1,135 +1,128 @@
 ---
 // Contact form dialog — native <dialog> + EmailJS, no framework.
-// Opens from any element with a [data-contact] attribute.
+// Native <dialog> gives role=dialog, aria-modal, focus-trap and Escape-to-close;
+// the script adds focus-return to the trigger. Opens from any [data-contact] element.
 ---
 
-<dialog class="contact-dialog" id="contact-dialog">
+<dialog class="contact-dialog" id="contact-dialog" aria-labelledby="cd-title">
 	<form id="contact-form">
 		<div class="cd-head">
-			<h3 class="disp">Say g'day</h3>
-			<button type="button" class="cd-x" data-cd-close aria-label="Close">×</button>
+			<h3 id="cd-title">Say g'day</h3>
+			<button type="button" class="cd-x" data-cd-close aria-label="Close">✕</button>
 		</div>
-		<label class="sr-only" for="cd-name">Name</label>
-		<input id="cd-name" name="name" type="text" placeholder="Name" required />
-		<label class="sr-only" for="cd-email">Email</label>
-		<input id="cd-email" name="email" type="email" placeholder="Email" required />
-		<label class="sr-only" for="cd-message">Message</label>
-		<textarea id="cd-message" name="message" placeholder="Message" rows="4" required></textarea>
+		<label class="cd-field">
+			Name
+			<input id="cd-name" name="name" type="text" required />
+		</label>
+		<label class="cd-field">
+			Email
+			<input id="cd-email" name="email" type="email" required />
+		</label>
+		<label class="cd-field">
+			Message
+			<textarea id="cd-message" name="message" rows="4" required></textarea>
+		</label>
 		<p class="cd-status" id="cd-status" hidden></p>
 		<div class="cd-actions">
-			<button type="button" class="cd-cancel" data-cd-close>Cancel</button>
-			<button type="submit" class="cd-send">Send</button>
+			<button type="submit" class="btn btn-solid cd-send">Send</button>
+			<button type="button" class="btn btn-ghost" data-cd-close>Cancel</button>
 		</div>
 	</form>
 </dialog>
 
 <style>
 	.contact-dialog {
-		width: calc(100% - 32px);
-		max-width: 460px;
+		width: calc(100% - 40px);
+		max-width: 520px;
 		margin: auto;
-		border: 1px solid #cdd5cf;
-		border-radius: 10px;
 		padding: 0;
-		background: var(--paper);
-		color: var(--ink);
+		background: var(--bg);
+		border: 1px solid var(--hair);
+		color: var(--fg);
 	}
 	.contact-dialog::backdrop {
-		background: rgba(27, 42, 39, 0.4);
-		backdrop-filter: blur(2px);
+		background: oklch(0 0 0 / 0.45);
 	}
 	.contact-dialog form {
-		padding: 26px;
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		padding: clamp(24px, 4vw, 40px);
 	}
 	.cd-head {
 		display: flex;
 		justify-content: space-between;
-		align-items: center;
-		margin-bottom: 16px;
+		align-items: baseline;
+		margin-bottom: 10px;
 	}
 	.cd-head h3 {
-		font-family: "Space Grotesk", sans-serif;
-		font-size: 24px;
-		font-weight: 500;
 		margin: 0;
+		font-size: 28px;
+		font-weight: 500;
+		letter-spacing: -0.03em;
 	}
 	.cd-x {
+		background: transparent;
 		border: 0;
-		background: none;
-		font-size: 24px;
-		line-height: 1;
+		color: var(--muted);
 		cursor: pointer;
-		color: var(--sub);
+		font-family: var(--font-mono);
+		font-size: 14px;
+		line-height: 1;
 	}
 	.cd-x:hover {
-		color: var(--survey-text);
+		color: var(--accent);
+	}
+	.cd-field {
+		display: flex;
+		flex-direction: column;
+		gap: 7px;
+		font-family: var(--font-mono);
+		font-size: 10px;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--muted);
 	}
 	.contact-dialog input,
 	.contact-dialog textarea {
 		width: 100%;
-		font-family: "Inter", sans-serif;
-		font-size: 14px;
-		color: var(--ink);
-		background: #fff;
-		border: 1px solid #cdd5cf;
-		border-radius: 6px;
-		padding: 10px 12px;
-		margin-bottom: 10px;
+		font-family: var(--font-sans);
+		font-size: 15px;
+		letter-spacing: 0;
+		text-transform: none;
+		color: var(--fg);
+		background: transparent;
+		border: 1px solid var(--hair);
+		padding: 11px 12px;
+	}
+	.contact-dialog textarea {
+		resize: vertical;
 	}
 	.contact-dialog input:focus,
 	.contact-dialog textarea:focus {
-		outline: 2px solid var(--survey);
-		outline-offset: 1px;
-		border-color: var(--survey);
+		outline: none;
+		border-color: var(--accent);
 	}
 	.cd-status {
-		font-size: 13px;
-		margin: 2px 0 10px;
+		margin: 0;
+		font-family: var(--font-mono);
+		font-size: 11px;
+		letter-spacing: 0.04em;
 	}
 	.cd-status.ok {
-		color: var(--teal);
+		color: var(--accent);
 	}
 	.cd-status.err {
-		color: #b3402a;
+		color: var(--accent);
 	}
 	.cd-actions {
 		display: flex;
-		justify-content: flex-end;
 		gap: 10px;
 		margin-top: 6px;
 	}
-	.cd-actions button {
-		font-family: "IBM Plex Mono", monospace;
-		font-size: 13px;
-		padding: 9px 18px;
-		border-radius: 6px;
-		cursor: pointer;
-	}
-	.cd-cancel {
-		background: transparent;
-		border: 1px solid #cdd5cf;
-		color: var(--ink);
-	}
-	.cd-cancel:hover {
-		border-color: var(--ink);
-	}
 	.cd-send {
-		background: var(--survey-text);
-		border: 0;
-		color: #fff;
-	}
-	.cd-send:hover {
-		background: var(--teal);
-	}
-	.sr-only {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		border: 0;
+		flex: 1;
+		justify-content: center;
 	}
 </style>
 
@@ -140,6 +133,7 @@
 	if (dialog) {
 		const form = document.getElementById("contact-form") as HTMLFormElement;
 		const statusEl = document.getElementById("cd-status") as HTMLParagraphElement;
+		let lastTrigger: HTMLElement | null = null;
 
 		const setStatus = (msg: string, isError = false) => {
 			statusEl.textContent = msg;
@@ -148,21 +142,24 @@
 		};
 		const close = () => {
 			dialog.close();
-			statusEl.hidden = true;
-			statusEl.textContent = "";
 		};
 
-		document
-			.querySelectorAll<HTMLElement>("[data-contact]")
-			.forEach((t) => t.addEventListener("click", (e) => {
+		document.querySelectorAll<HTMLElement>("[data-contact]").forEach((t) =>
+			t.addEventListener("click", (e) => {
 				e.preventDefault();
+				lastTrigger = t;
+				statusEl.hidden = true;
+				statusEl.textContent = "";
 				dialog.showModal();
-			}));
+			})
+		);
 		dialog.querySelectorAll<HTMLElement>("[data-cd-close]").forEach((b) => b.addEventListener("click", close));
 		// backdrop click closes
 		dialog.addEventListener("click", (e) => {
 			if (e.target === dialog) close();
 		});
+		// return focus to the trigger when the dialog closes (Escape or button)
+		dialog.addEventListener("close", () => lastTrigger?.focus());
 
 		form.addEventListener("submit", async (e) => {
 			e.preventDefault();
