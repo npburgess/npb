@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
+import { Image } from "astro:assets";
 import Base from "../../layouts/Base.astro";
 
 export async function getStaticPaths() {
@@ -11,53 +12,78 @@ export async function getStaticPaths() {
 }
 
 const { project } = Astro.props;
-const { title, summary, type, tech, liveUrl, repoUrl } = project.data;
+const { title, summary, type, tech, liveUrl, repoUrl, cover } = project.data;
 const { Content } = await render(project);
 const displayUrl = (u?: string) => (u ? u.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "") : "");
 ---
 
 <Base title={`${title} | npb.me`} description={summary}>
 	<section class="section case-section">
-		<article class="case">
-			<a class="back label" href="/projects">← All projects</a>
+		<div class:list={["case-grid", { "has-preview": cover }]}>
+			<article class="case">
+				<a class="back label" href="/projects">← All projects</a>
 
-			<div class="case-head">
-				<h1 class="case-h1">{title}</h1>
-				<span class={`type-tag ${type}`}>{type}</span>
-			</div>
-			<p class="lede">{summary}</p>
+				<div class="case-head">
+					<h1 class="case-h1">{title}</h1>
+					<span class={`type-tag ${type}`}>{type}</span>
+				</div>
+				<p class="lede">{summary}</p>
+
+				{
+					tech.length > 0 && (
+						<ul class="tech">
+							{tech.map((t) => (
+								<li class="chip">{t}</li>
+							))}
+						</ul>
+					)
+				}
+
+				<div class="links">
+					{
+						liveUrl && (
+							<a class="btn btn-ghost" href={liveUrl} target="_blank" rel="noopener noreferrer">
+								{displayUrl(liveUrl)} ↗
+							</a>
+						)
+					}
+					{
+						repoUrl && (
+							<a class="btn btn-ghost" href={repoUrl} target="_blank" rel="noopener noreferrer">
+								Source ↗
+							</a>
+						)
+					}
+				</div>
+
+				<div class="body">
+					<Content />
+				</div>
+			</article>
 
 			{
-				tech.length > 0 && (
-					<ul class="tech">
-						{tech.map((t) => (
-							<li class="chip">{t}</li>
-						))}
-					</ul>
+				cover && (
+					<aside class="preview">
+						<div class="preview-panel">
+							<span class="preview-label label">Preview</span>
+							<a
+								class="preview-shot"
+								href={liveUrl ?? "#"}
+								target={liveUrl ? "_blank" : undefined}
+								rel={liveUrl ? "noopener noreferrer" : undefined}
+							>
+								<Image src={cover} alt={`Screenshot of ${title}`} widths={[420, 840]} sizes="(max-width: 900px) 100vw, 420px" />
+							</a>
+							{liveUrl && (
+								<a class="preview-visit label" href={liveUrl} target="_blank" rel="noopener noreferrer">
+									Visit {displayUrl(liveUrl)} ↗
+								</a>
+							)}
+						</div>
+					</aside>
 				)
 			}
-
-			<div class="links">
-				{
-					liveUrl && (
-						<a class="btn btn-ghost" href={liveUrl} target="_blank" rel="noopener noreferrer">
-							{displayUrl(liveUrl)} ↗
-						</a>
-					)
-				}
-				{
-					repoUrl && (
-						<a class="btn btn-ghost" href={repoUrl} target="_blank" rel="noopener noreferrer">
-							Source ↗
-						</a>
-					)
-				}
-			</div>
-
-			<div class="body">
-				<Content />
-			</div>
-		</article>
+		</div>
 	</section>
 </Base>
 
@@ -65,9 +91,75 @@ const displayUrl = (u?: string) => (u ? u.replace(/^https?:\/\/(www\.)?/, "").re
 	.case-section {
 		border-bottom: 0;
 	}
+	.case-grid {
+		display: block;
+	}
 	.case {
 		max-width: 46rem;
 		padding: 52px 0;
+	}
+
+	/* two-column with sticky preview rail (only when a cover exists) */
+	@media (min-width: 900px) {
+		.case-grid.has-preview {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) 380px;
+			gap: clamp(32px, 5vw, 72px);
+			align-items: start;
+		}
+	}
+
+	.preview {
+		padding: 52px 0;
+	}
+	.preview-panel {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+	.preview-label {
+		color: var(--muted);
+	}
+	.preview-shot {
+		display: block;
+		border: 1px solid var(--line);
+		overflow: hidden;
+	}
+	.preview-shot :global(img) {
+		aspect-ratio: 3 / 2;
+		display: block;
+		height: auto;
+		object-fit: cover;
+		object-position: center top;
+		width: 100%;
+	}
+	.preview-visit:hover {
+		color: var(--accent);
+	}
+
+	@media (min-width: 900px) {
+		.preview {
+			position: sticky;
+			top: 96px;
+		}
+	}
+
+	/* mobile: stack, with the preview lifted above the article */
+	@media (max-width: 899px) {
+		.case-grid.has-preview {
+			display: flex;
+			flex-direction: column;
+		}
+		.case-grid.has-preview .preview {
+			order: -1;
+			padding: 44px 0 0;
+		}
+		.case-grid.has-preview .case {
+			padding-top: 28px;
+		}
+		.preview-panel {
+			max-width: 46rem;
+		}
 	}
 	.back {
 		display: inline-block;
