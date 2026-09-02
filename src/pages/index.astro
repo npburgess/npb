@@ -1,6 +1,8 @@
 ---
+import { Image } from "astro:assets";
 import Base from "../layouts/Base.astro";
 import ContactModal from "../components/ContactModal.astro";
+import portrait from "../assets/portrait.png";
 
 // Path — biographical waypoints (systematic redesign; inline, no map).
 const path = [
@@ -36,7 +38,7 @@ const stack = ["Typescript", "React", "Astro", "Python", "Postgres", "A11y", "Cl
 
 			<div class="hero-lede">
 				<p>
-					Sixteen years building software — twelve of them in Los Angeles, the rest back home on
+					Sixteen years building software, twelve of them in Los Angeles, the rest back home on
 					the island I grew up on. Modern TypeScript stack, plain-language explanations, work that
 					stays maintainable.
 				</p>
@@ -57,10 +59,11 @@ const stack = ["Typescript", "React", "Astro", "Python", "Postgres", "A11y", "Cl
 			</div>
 
 			<div class="hero-portrait">
-				<img
-					src="/portrait.png"
-					width="800"
-					height="1000"
+				<Image
+					src={portrait}
+					width={900}
+					height={833}
+					format="webp"
 					alt="Nathaniel Burgess"
 					loading="eager"
 					decoding="async"
