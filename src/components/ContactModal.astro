@@ -177,7 +177,7 @@
 					params,
 					import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY
 				);
-				setStatus("Message sent — thanks, I'll be in touch.");
+				setStatus("Message sent. Thanks, I'll be in touch.");
 				form.reset();
 			} catch (err) {
 				const x = err as { status?: number; text?: string };
