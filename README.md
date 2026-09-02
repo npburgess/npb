@@ -1,11 +1,14 @@
 # npb.me
 
-The personal site of Nathaniel Burgess — a cartographic "Waypoint" portfolio.
+The personal site of Nathaniel Burgess — a systematic, typographic portfolio
+(Swiss-grid layout, oklch light/dark theme, single terracotta accent).
 
 ## Stack
 
-Astro 5 (static) · React 19 islands · Tailwind v4 · MDX content collections ·
-EmailJS · deployed to GitHub Pages at **npb.me**.
+Astro 5 (static, pure Astro — no framework runtime) · Tailwind v4 ·
+MDX content collections · self-hosted fonts (`@fontsource`) · EmailJS ·
+deployed to GitHub Pages at **npb.me**. Interactivity (theme toggle, contact
+modal, back-to-top) is vanilla JS.
 
 ## Develop
 
@@ -20,8 +23,11 @@ npm run preview        # serve the build
 ## Content
 
 Projects are MDX files in `src/content/projects/` with typed frontmatter
-(`type: work | hobby`, `featured`, `liveUrl`, `tech`, `date`). The home page and
+(`title`, `summary`, `type: work | hobby`, `featured`, `liveUrl`, `repoUrl`,
+`tech`, `date`, and an optional `cover` screenshot). The home page and
 `/projects` read them via the content collection; each becomes `/projects/<slug>`.
+On a case-study page, `cover` renders a sticky preview panel (optimized via
+`astro:assets`); pages without one render single-column.
 
 ## Environment
 
@@ -39,5 +45,5 @@ Pushing to `main` triggers `.github/workflows/deploy.yml` (build with
 `withastro/action`, publish with `actions/deploy-pages`). One-time setup:
 
 1. Repo **Settings → Pages → Source: GitHub Actions**.
-2. Add the three `VITE_EMAILJS_*` values as repo **secrets**.
+2. Add the three `PUBLIC_EMAILJS_*` values as repo **secrets**.
 3. Custom domain `npb.me` is preserved via `public/CNAME`.
