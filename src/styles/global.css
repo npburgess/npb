@@ -48,6 +48,10 @@ html[data-theme="dark"] {
 html {
 	scroll-behavior: smooth;
 }
+/* Anchor targets land clear of the fixed nav instead of tucking under it. */
+section[id] {
+	scroll-margin-top: 88px;
+}
 body {
 	background: var(--bg);
 	background-image:
@@ -192,6 +196,7 @@ a:hover {
 /* ---- work table (shared by home + /projects) ---- */
 .worktable {
 	--work-cols: 1.1fr 1.5fr 88px 100px;
+	margin-inline: -16px;
 }
 .workrow {
 	display: grid;
@@ -206,7 +211,7 @@ a:hover {
 	font-size: 10px;
 	letter-spacing: 0.14em;
 	text-transform: uppercase;
-	padding: 10px 0;
+	padding: 10px 16px;
 }
 .workrow.head .r {
 	text-align: right;
@@ -214,7 +219,7 @@ a:hover {
 a.workrow {
 	border-bottom: 1px solid var(--line-soft);
 	color: var(--fg);
-	padding: 22px 0;
+	padding: 22px 16px;
 }
 a.workrow:last-child {
 	border-bottom: 1px solid var(--line);

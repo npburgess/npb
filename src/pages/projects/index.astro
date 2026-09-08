@@ -3,7 +3,7 @@ import { getCollection } from "astro:content";
 import Base from "../../layouts/Base.astro";
 
 // Paid work first, then hobby — matches the home page order.
-const order = ["compass", "global-operation-centre", "thusword", "keirons-krafts", "bespoke-betty", "boozers"];
+const order = ["compass", "global-operation-centre", "thusword", "boozers", "keirons-krafts", "bespoke-betty"];
 const projects = (await getCollection("projects", ({ data }) => !data.draft)).sort(
 	(a, b) => order.indexOf(a.id) - order.indexOf(b.id)
 );
@@ -13,6 +13,7 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft)).so
 	<section class="section railed projects">
 		<div class="rail"><span class="num">—</span><br /><span class="lbl">WORK</span></div>
 		<div class="rail-body">
+			<a class="back label" href="/">← Home</a>
 			<h1 class="projects-h1">All projects.</h1>
 			<div class="worktable">
 				<div class="workrow head">
@@ -20,7 +21,7 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft)).so
 				</div>
 				{
 					projects.map((p) => (
-						<a class="workrow" href={`/projects/${p.id}`} aria-label={p.data.title}>
+						<a class="workrow" href={`/projects/${p.id}/`} aria-label={p.data.title}>
 							<span class="name">{p.data.title}</span>
 							<span class="desc">{p.data.summary}</span>
 							<span class={`type-tag ${p.data.type}`}>{p.data.type}</span>
@@ -36,6 +37,13 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft)).so
 <style>
 	.rail-body {
 		padding: 52px 0;
+	}
+	.back {
+		display: inline-block;
+		margin-bottom: 24px;
+	}
+	.back:hover {
+		color: var(--accent);
 	}
 	.projects-h1 {
 		margin: 0 0 34px;

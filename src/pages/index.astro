@@ -14,12 +14,12 @@ const path = [
 
 // Work — paid work first, then hobby. Descriptions tuned for the table rhythm.
 const work = [
-	{ name: "Cycle Inspect", desc: "A bike-inspection platform for field inspections, dashboards and PDF reports.", type: "work", href: "/projects/compass" },
-	{ name: "Global Operation Centre", desc: "Data visualisation for on-call engineers and field technicians at Firmus.", type: "work", href: "/projects/global-operation-centre" },
-	{ name: "Thusword", desc: "A once-a-day word game, a freeform crossword solved by progressive reveal.", type: "hobby", href: "/projects/thusword" },
-	{ name: "Keiron's Krafts", desc: "An online storefront for handmade goods, with invoicing and image uploads.", type: "hobby", href: "/projects/keirons-krafts" },
-	{ name: "Bespoke Betty", desc: "A showcase site for made-to-order clothing. Client-editable, no backend to run.", type: "hobby", href: "/projects/bespoke-betty" },
-	{ name: "Boozers Squash", desc: "A single-page marketing site for a Launceston squash club.", type: "hobby", href: "/projects/boozers" }
+	{ name: "Cycle Inspect", desc: "A bike-inspection platform for field inspections, dashboards and PDF reports.", type: "work", href: "/projects/compass/" },
+	{ name: "Global Operation Centre", desc: "Data visualisation for on-call engineers and field technicians at Firmus.", type: "work", href: "/projects/global-operation-centre/" },
+	{ name: "Thusword", desc: "A once-a-day word game, a freeform crossword solved by progressive reveal.", type: "hobby", href: "/projects/thusword/" },
+	{ name: "Boozers Squash", desc: "A squash club marketing site with a member-only pennant app for live scoring, ladders and an admin console.", type: "hobby", href: "/projects/boozers/" },
+	{ name: "Keiron's Krafts", desc: "An online storefront for handmade goods, with invoicing and image uploads.", type: "hobby", href: "/projects/keirons-krafts/" },
+	{ name: "Bespoke Betty", desc: "A showcase site for made-to-order clothing. Client-editable, no backend to run.", type: "hobby", href: "/projects/bespoke-betty/" }
 ];
 
 const stack = ["Typescript", "React", "Astro", "Python", "Postgres", "A11y", "Claude Code"];
@@ -123,6 +123,7 @@ const stack = ["Typescript", "React", "Astro", "Python", "Postgres", "A11y", "Cl
 	<section id="work" class="section railed">
 		<div class="rail"><span class="num">03</span><br /><span class="lbl">WORK</span></div>
 		<div class="rail-body work-body">
+			<a class="work-all" href="/projects/">All projects ↗</a>
 			<div class="worktable">
 				<div class="workrow head">
 					<span>Project</span><span>Description</span><span>Type</span><span class="r">Link</span>
@@ -327,6 +328,20 @@ const stack = ["Typescript", "React", "Astro", "Python", "Postgres", "A11y", "Cl
 		flex-wrap: wrap;
 		gap: 6px;
 	}
+	.work-all {
+		color: var(--muted);
+		display: inline-block;
+		font-family: var(--font-mono);
+		font-size: 10px;
+		letter-spacing: 0.14em;
+		margin-bottom: 16px;
+		text-decoration: none;
+		text-transform: uppercase;
+		transition: color 0.2s ease;
+	}
+	.work-all:hover {
+		color: var(--accent);
+	}
 
 	/* ---- 04 contact ---- */
 	.contact-body {
@@ -353,8 +368,10 @@ const stack = ["Typescript", "React", "Astro", "Python", "Postgres", "A11y", "Cl
 	}
 
 	/* ---- responsive ---- */
+	/* tablet: head + lede full width; spec box and portrait split the row 50/50 */
 	@media (max-width: 900px) {
-		.hero-grid > * {
+		.hero-head,
+		.hero-lede {
 			grid-column: 1 / span 12;
 			border-left: 0;
 		}
@@ -362,7 +379,12 @@ const stack = ["Typescript", "React", "Astro", "Python", "Postgres", "A11y", "Cl
 			padding-right: 0;
 		}
 		.hero-spec {
-			padding-right: 0;
+			grid-column: 1 / span 6;
+			padding-right: 24px;
+		}
+		.hero-portrait {
+			grid-column: 7 / span 6;
+			min-height: clamp(320px, 46vw, 480px);
 		}
 		.path-grid {
 			grid-template-columns: 1fr 1fr;
@@ -372,6 +394,19 @@ const stack = ["Typescript", "React", "Astro", "Python", "Postgres", "A11y", "Cl
 		}
 		.method-grid {
 			grid-template-columns: 1fr;
+		}
+	}
+
+	/* mobile: everything stacks full width; portrait goes full-bleed of the column */
+	@media (max-width: 600px) {
+		.hero-spec,
+		.hero-portrait {
+			grid-column: 1 / span 12;
+			border-left: 0;
+			padding-right: 0;
+		}
+		.hero-portrait {
+			min-height: clamp(360px, 90vw, 560px);
 		}
 	}
 </style>
