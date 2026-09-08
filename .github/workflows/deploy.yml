@@ -23,6 +23,8 @@ jobs:
         uses: actions/checkout@v5
       - name: Build with Astro
         uses: withastro/action@v3
+        with:
+          node-version: 22
         env:
           PUBLIC_EMAILJS_SERVICE_ID: ${{ secrets.PUBLIC_EMAILJS_SERVICE_ID }}
           PUBLIC_EMAILJS_TEMPLATE_ID: ${{ secrets.PUBLIC_EMAILJS_TEMPLATE_ID }}
