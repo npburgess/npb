@@ -1,10 +1,10 @@
 ---
 title: Boozers Squash
-summary: A single-page marketing site for a Launceston squash club.
+summary: "A squash club marketing site that grew a member-only pennant app: live scoring, ladders, rosters, and an admin console, all on a static host."
 type: hobby
 featured: false
 liveUrl: https://boozers.club
-tech: ["Astro", "Netlify"]
+tech: ["Astro", "React", "TypeScript", "Supabase", "Netlify"]
 cover: ../../assets/projects/boozers.png
 date: 2025-09-01
 draft: false
@@ -12,15 +12,62 @@ draft: false
 
 ## About
 
-Boozers Squash is a fun little site for finding somewhere to play, a place to
-have a hit of squash, meet new people, and make some friends over a few beers
-along the way. The friendly front door to a Launceston club.
+Boozers Squash is a squash club at the Theogenes Complex in Launceston, Tasmania. It
+started as a single-page marketing site, the friendly front door for finding somewhere
+to play, having a hit, and meeting people over a few beers afterwards. It has since grown
+a member-only app that runs the club's pennant nights end to end.
 
-## Notable
+The public page is still the shopfront. Behind it, at `/app`, sits a portal members reach
+on their phones: sign in, score matches live, and check where their team sits.
 
-- Static single page built with **Astro**, deployed on **Netlify**.
-- Design tokens and shared styles in one global stylesheet, simple to maintain.
+## The member app
+
+Members sign in with a name and a PIN and land on the tools they actually use on a
+pennant night:
+
+- **Live scoring** with two big tap panels, built for a phone at courtside. The scoring
+  engine is a pure, unit-tested module: point-a-rally to 15, win-by-2 from 14 all,
+  best-of-five, with serve-side tracking and an **Undo** that rewinds a single point
+  cleanly, even back across a game boundary.
+- **Results and ladders** that recompute themselves. Standings and per-player stats are
+  database views, so every table stays consistent with whatever has been recorded or
+  corrected.
+- **Rosters, teams, and stats** for the current pennant, plus a **player directory** of
+  active members.
+- **Fill-ins with no paperwork.** Short a player? Any member can add a guest on the fly and
+  score against them. The result counts on the ladder for the member opponent while the
+  guest stays profile-free.
+
+## The admin console
+
+Admins get an extra tab set, gated by row-level security so the write paths simply do not
+exist for a normal member:
+
+- **Generate a pennant.** Name it, list the teams, order the roster by strength, and build.
+  A snake draft balances the sides so each team's top line is a genuine top seed, and a
+  round-robin schedule lays out the rounds and line-versus-line fixtures. The pennant is
+  built as a draft and only flips to active once every step succeeds, so a failed build
+  rolls itself back.
+- **Manage the season.** Edit rosters and games, move players between teams and lines,
+  adjust seed ranks and contact details, and toggle active members versus fill-ins.
+  Deactivating a departed player drops them from the sign-in list while keeping their
+  match history intact.
+- **Finals and rankings.** Generate the finals series and organise the rankings that seed
+  it.
+- **Corrections.** Void and re-score a completed result, reassign a side to another member
+  or a guest, and fix a round date. Because the stats are views, everything downstream
+  recomputes on its own.
+
+## Architecture
+
+The whole thing stays a static deploy. The app is a client-only React island embedded in
+the Astro site, talking straight to **Supabase** (Postgres, Auth, and row-level security)
+with no backend server of its own. Netlify serves plain static files; Supabase enforces
+who can read and write. Authentication is PIN-based, so the club never has to send members
+email, and the entire stack is owned under a club account so it can be handed over intact.
 
 ## Stack
 
-Astro, deployed on Netlify.
+Astro 5 and a React 19 island, TypeScript throughout, Supabase for data and auth, deployed
+static on Netlify. The public site keeps its `LocalBusiness` structured data and cookieless
+analytics; the scoring and draft logic live in pure modules with unit tests.
