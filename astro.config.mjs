@@ -7,6 +7,13 @@ import tailwindcss from "@tailwindcss/vite";
 // https://astro.build/config
 export default defineConfig({
 	site: "https://npb.me",
+	// Canonical URLs carry a trailing slash. This matches the default "directory"
+	// build format (pages emit as `/path/index.html`, so GitHub Pages 301s the
+	// no-slash form to the slash form). Setting it explicitly rather than relying
+	// on the "ignore" default documents the intent and keeps canonicals, the
+	// sitemap, and internal links aligned on one form — avoids the GSC
+	// "page with redirect" noise from mixed no-slash/slash URLs.
+	trailingSlash: "always",
 	integrations: [mdx(), sitemap()],
 	vite: {
 		plugins: [tailwindcss()],
